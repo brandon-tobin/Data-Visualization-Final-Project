@@ -225,12 +225,16 @@ WorldChart.prototype.update = function(electionResult, colorScale){
 
 WorldChart.prototype.drawMap = function(world){
 
+    var self = this;
+
+    var countries = self.readCountryData();
+
+    // console.log(countries);
+
     //Load in json data to make map
     // var world_data;
 
-    console.log("Made it in draw map!");
 
-    var self = this;
 
     projection = d3.geoEquirectangular()
         .scale(self.svgHeight / Math.PI)
@@ -263,7 +267,10 @@ WorldChart.prototype.drawMap = function(world){
         .classed("countries", true)
         .on("click", function (d, i) {
             console.log(d);
-            tip.show;
+            // for (var j = 0; j < countries.length; j++)
+            // {
+            //     if (countries[j].Country == )
+            // }
         });
 };
 
@@ -276,3 +283,14 @@ WorldChart.prototype.readMapData = function() {
         self.drawMap(world);
     });
 };
+
+WorldChart.prototype.readCountryData = function() {
+    var self = this;
+
+    d3.csv("data/countries.csv", function (error, countryData) {
+        if (error) throw error;
+
+        console.log(countryData);
+        return countryData;
+    });
+}
