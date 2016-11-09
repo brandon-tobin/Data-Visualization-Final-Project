@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="bower_components/d3/d3.min.js"></script>
+<script src="bower_components/d3-tip/index.js"></script>
+<script type="application/javascript">
+    function map_tooltip(country, start_year, end_year){
+
+        d3.csv("data/CountryDataByYear.csv", function (error, cData) {
+            d3.csv("data/countries.csv", function (error, countries) {
+
+                country_data = [];
+                countries.forEach(function(c,i){
+                    _country = c;
+                    var cDataFiltered = cData.filter(function(d){return d["Country Name"] ==_country.Country;});
+
+                    options = [];
+
+                    cDataFiltered.forEach(function(d, i){
+                        var o ={};
+                        o.Name = d["Series Name"];
+                        o.Years = {};
+
+                        for(var i = 1990; i<= 2016; i++){
+                            o.Years[i] = d[i + " [YR" + i + "]"];
+                        }
+                        options.push(o);
+                    });
+
+
+                    var cPack = {};
+                    cPack.Name = c["Country"];
+                    cPack.Code = c["Country code"];
+                    cPack.Info = c;
+                    cPack.Options = options;
+                    country_data.push(cPack);
+                });
+
+
+            });
+        });
+    }
+
+
+        map_tooltip("","","");
+</script>
+
+
+<svg id="state_tooltip"></svg>
+</body>
+</html>
