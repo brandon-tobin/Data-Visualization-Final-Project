@@ -76,7 +76,6 @@ YearChart.prototype.update = function(){
                 var codeThree = "";
 
                 cDataFiltered.forEach(function(d, i){
-                    // console.log(d);
                     codeThree = d["Country Code"];
                     var o ={};
                     o.Name = d["Series Name"];
@@ -118,7 +117,8 @@ YearChart.prototype.update = function(){
     //     .domain(domain).range(range);
 
     self.colorScale = d3.scaleLinear()
-        .range(["deepskyblue", "steelblue", "midnightblue"]);
+        .range(["#cd6155", "#641e16"]);
+        // .range(["yellow", "red", "darkred", "green"]);
 
     // ******* PART I *******
 
