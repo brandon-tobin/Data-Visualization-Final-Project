@@ -228,6 +228,27 @@ WorldChart.prototype.drawMap = function(world, countryCodes, country_data, color
 
     var self = this;
 
+    // var min = d3.min(country_data, function (d) {
+    //     if (d === undefined || d === null) {
+    //         // console.log("Data undefined");
+    //         return 0;
+    //     }
+    //     else {
+    //         // console.log("Made it here 1");
+    //         if (d.Options.length > 0) {
+    //             // console.log("Made it here 2");
+    //             // console.log(colorScale(data.Options[0].Years[1990]));
+    //             return d.Options[2].Years[1990];
+    //         }
+    //     }
+    // });
+
+    colorScale.domain([0, 10000000]);
+
+    // console.log("MIN is: " + min);
+
+    // console.log(country_data);
+
     // var countries = self.readCountryData();
 
     projection = d3.geoEquirectangular()
@@ -288,7 +309,6 @@ WorldChart.prototype.drawMap = function(world, countryCodes, country_data, color
 WorldChart.prototype.readMapData = function(country_data, colorScale) {
     var self = this;
 
-    // console.log("Made it in read map data!");
     d3.json("data/world.json", function (error, world) {
         d3.csv("data/CountryCodes.csv", function (error, countryCodes) {
             if (error) throw error;
@@ -300,13 +320,12 @@ WorldChart.prototype.readMapData = function(country_data, colorScale) {
 function findData (d, countryCodes, country_data)
 {
     var country_name = "";
-
     for (var j = 0; j < countryCodes.length; j++)
     {
         if (countryCodes[j].CodeThree == d.id)
         {
-            console.log(countryCodes[j].Name);
             country_name = countryCodes[j].Name;
+            // console.log("Found " + country_name + "!!!");
             break;
         }
     }
@@ -317,7 +336,6 @@ function findData (d, countryCodes, country_data)
         {
             return (country_data[j]);
         }
-        // console.log(country_data[j]);
     }
 }
 
