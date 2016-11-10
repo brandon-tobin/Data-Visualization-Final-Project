@@ -84,18 +84,18 @@ WorldChart.prototype.tooltip_render = function (tooltip_data) {
  * @param electionResult election data for the year selected
  * @param colorScale global quantile scale based on the winning margin between republicans and democrats
  */
-WorldChart.prototype.update = function(electionResult, colorScale){
+WorldChart.prototype.update = function(country_data, colorScale){
     var self = this;
 
     //Calculates the maximum number of columns to be laid out on the svg
-    self.maxColumns = d3.max(electionResult,function(d){
-        return parseInt(d["Space"]);
-    });
-
-    //Calculates the maximum number of rows to be laid out on the svg
-    self.maxRows = d3.max(electionResult,function(d){
-        return parseInt(d["Row"]);
-    });
+    // self.maxColumns = d3.max(electionResult,function(d){
+    //     return parseInt(d["Space"]);
+    // });
+    //
+    // //Calculates the maximum number of rows to be laid out on the svg
+    // self.maxRows = d3.max(electionResult,function(d){
+    //     return parseInt(d["Row"]);
+    // });
     //for reference:https://github.com/Caged/d3-tip
     //Use this tool tip element to handle any hover over the chart
     tip = d3.tip().attr('class', 'd3-tip')
@@ -104,6 +104,7 @@ WorldChart.prototype.update = function(electionResult, colorScale){
             return [0,0];
         })
         .html(function(d) {
+            // console.log(d);
             var tooltip_data = "";
             if (d.I_Votes == 0)
             {
@@ -133,7 +134,7 @@ WorldChart.prototype.update = function(electionResult, colorScale){
             return self.tooltip_render(tooltip_data);
         });
 
-    return self.readMapData();
+    return self.readMapData(country_data, colorScale);
     // return self.drawMap(electionResult, colorScale);
 
 
@@ -223,18 +224,11 @@ WorldChart.prototype.update = function(electionResult, colorScale){
     //HINT: Use the .republican, .democrat and .independent classes to style your elements.
 };
 
-WorldChart.prototype.drawMap = function(world){
+WorldChart.prototype.drawMap = function(world, countryCodes, country_data, colorScale){
 
     var self = this;
 
-    var countries = self.readCountryData();
-
-    // console.log(countries);
-
-    //Load in json data to make map
-    // var world_data;
-
-
+    // var countries = self.readCountryData();
 
     projection = d3.geoEquirectangular()
         .scale(self.svgHeight / Math.PI)
@@ -264,33 +258,77 @@ WorldChart.prototype.drawMap = function(world){
         .attr("id", function (d) {
             return (d.id);
         })
-        .classed("countries", true)
+        .attr("stroke", "#f7f7f7")
+        .attr("fill", function (d) {
+            var data = findData(d, countryCodes, country_data);
+
+            if (data === undefined || data === null) {
+                // console.log("Data undefined");
+                return "#d9d9d9";
+            }
+            else
+            {
+                // console.log("Made it here 1");
+                if (data.Options.length > 0)
+                {
+                    // console.log("Made it here 2");
+                    // console.log(colorScale(data.Options[0].Years[1990]));
+                    return colorScale(data.Options[0].Years[1990]);
+                }
+            }
+        })
         .on("click", function (d, i) {
             console.log(d);
-            // for (var j = 0; j < countries.length; j++)
-            // {
-            //     if (countries[j].Country == )
-            // }
+            var country_name = findData(d, countryCodes, country_data);
+            console.log(country_name);
+
         });
 };
 
-WorldChart.prototype.readMapData = function() {
+WorldChart.prototype.readMapData = function(country_data, colorScale) {
     var self = this;
 
-    console.log("Made it in read map data!");
+    // console.log("Made it in read map data!");
     d3.json("data/world.json", function (error, world) {
-        if (error) throw error;
-        self.drawMap(world);
+        d3.csv("data/CountryCodes.csv", function (error, countryCodes) {
+            if (error) throw error;
+            self.drawMap(world, countryCodes, country_data, colorScale);
+        })
     });
 };
 
-WorldChart.prototype.readCountryData = function() {
-    var self = this;
+function findData (d, countryCodes, country_data)
+{
+    var country_name = "";
 
-    d3.csv("data/countries.csv", function (error, countryData) {
-        if (error) throw error;
+    for (var j = 0; j < countryCodes.length; j++)
+    {
+        if (countryCodes[j].CodeThree == d.id)
+        {
+            console.log(countryCodes[j].Name);
+            country_name = countryCodes[j].Name;
+            break;
+        }
+    }
 
-        console.log(countryData);
-        return countryData;
-    });
+    for (j = 0; j < country_data.length; j++)
+    {
+        if (country_data[j].Name == country_name)
+        {
+            return (country_data[j]);
+        }
+        // console.log(country_data[j]);
+    }
 }
+
+
+// WorldChart.prototype.readCountryData = function() {
+//     var self = this;
+//
+//     d3.csv("data/countries.csv", function (error, countryData) {
+//         if (error) throw error;
+//
+//         // console.log(countryData);
+//         return countryData;
+//     });
+// }
