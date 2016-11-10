@@ -51,3 +51,25 @@ d3.csv("data/CountryDataByYear.csv", function (error, cData) {
 
     });
 });
+
+
+
+//Here is an enum that should help access the options easier
+var OptionEnum = {
+            CO2_GDP : "CO2 emissions (kg per PPP $ of GDP)",
+            CO2_Total_kt : "CO2 emissions (kt)",
+            CO2_per_capita : "CO2 emissions (metric tons per capita)",
+            CO2_by_electricityHeat : "CO2 emissions from electricity and heat production, total (% of total fuel combustion)",
+            CO2_by_gaseousFuel : "CO2 emissions from gaseous fuel consumption (% of total)",
+            CO2_by_liquidFuel : "CO2 emissions from liquid fuel consumption (% of total)",
+            CO2_by_manufacturing : "CO2 emissions from manufacturing industries and construction (% of total fuel combustion)",
+            CO2_by_buildingsPublicServices : "CO2 emissions from other sectors, excluding residential buildings and commercial and public services (% of total fuel combustion)",
+            CO2_by_solidFuel : "CO2 emissions from solid fuel consumption (% of total)",
+
+
+            Population : "Population, total",
+            SurfaceArea : "Surface area (sq. km)",
+            GDP : "GDP (current US$)",
+            GDP_Growth : "GDP growth (annual %)",
+            GDP_per_capita : "GDP per capita (current US$)"
+        }
