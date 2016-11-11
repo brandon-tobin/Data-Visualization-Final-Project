@@ -224,7 +224,7 @@ WorldChart.prototype.update = function(country_data, colorScale){
     //HINT: Use the .republican, .democrat and .independent classes to style your elements.
 };
 
-WorldChart.prototype.drawMap = function(world, countryCodes, country_data, colorScale){
+WorldChart.prototype.drawMap = function(world, countryCodes, country_data){
 
     var self = this;
 
@@ -240,7 +240,7 @@ WorldChart.prototype.drawMap = function(world, countryCodes, country_data, color
             }
     });
 
-    colorScale.domain([min, max]);
+    // colorScale.domain([min, max]);
 
     projection = d3.geoEquirectangular()
         .scale(self.svgHeight / Math.PI)
@@ -259,6 +259,20 @@ WorldChart.prototype.drawMap = function(world, countryCodes, country_data, color
 
     var path = d3.geoPath()
         .projection(projection);
+
+    // var colorScale = d3.scaleLinear()
+    //     .domain([min, max])
+    //     .range(["#f2d7d5", "#641e16"]);
+
+
+    colors = ["#ffe6e6", "#ffcccc","#ffb3b3","#ff8080", "#ff4d4d","#ff1a1a","#e60000","#b30000","#800000"];
+
+    var buckets = 100000;
+
+    var colorScale = d3.scaleQuantile()
+        .domain([min, buckets - 1, max])
+        .range(colors);
+
 
     var svg = self.svg;
 
@@ -289,7 +303,7 @@ WorldChart.prototype.drawMap = function(world, countryCodes, country_data, color
             }
         })
         .on("click", function (d, i) {
-            console.log(d);
+            // console.log(d);
             var country_name = findData(d, countryCodes, country_data);
             console.log(country_name);
 
