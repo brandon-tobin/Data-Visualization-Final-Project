@@ -100,7 +100,7 @@ YearChart.prototype.update = function(){
             });
 
             // console.log(country_data);
-            self.tileChart.update(country_data, self.colorScale);
+            self.tileChart.update(country_data);
 
         });
     });
