@@ -5,11 +5,56 @@
     <title>Title</title>
 </head>
 <body>
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+
 <script src="bower_components/d3/d3.min.js"></script>
 <script src="bower_components/d3-tip/index.js"></script>
-<script type="application/javascript">
-    function map_tooltip(country, start_year, end_year){
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<style>
+    .bar{
+        fill: black;
+        stroke: whitesmoke;
+        text-replace: 5px;
+    }
 
+</style>
+
+
+
+<script type="application/javascript">
+    OptionEnum = {
+
+        CO2_Total_kt : "CO2 emissions (kt)",
+        CO2_per_capita : "CO2 emissions (metric tons per capita)",
+
+        FuelTypes : {
+            CO2_by_gaseousFuel: "CO2 emissions from gaseous fuel consumption (% of total)",
+            CO2_by_liquidFuel: "CO2 emissions from liquid fuel consumption (% of total)",
+            CO2_by_solidFuel: "CO2 emissions from solid fuel consumption (% of total)",
+        },
+
+        CombustionFactors : {
+            CO2_by_elec: "CO2 emissions from electricity and heat production, total (% of total fuel combustion)",
+            CO2_by_manufacturing: "CO2 emissions from manufacturing industries and construction (% of total fuel combustion)",
+            CO2_by_buildingsPublicServices: "CO2 emissions from other sectors, excluding residential buildings and commercial and public services (% of total fuel combustion)",
+            CO2_by_otherSectors : " CO2 emissions from other sectors, excluding residential buildings and commercial and public services (% of total fuel combustion)",
+        },
+
+        Population : "Population, total",
+
+        SurfaceArea : "Surface area (sq. km)",
+
+        GDP_Options : {
+            GDP: "GDP (current US$)",
+            GDP_Growth: "GDP growth (annual %)",
+            GDP_per_capita: "GDP per capita (current US$)",
+            CO2_GDP: "CO2 emissions (kg per PPP $ of GDP)",
+        }
+    }
+    years = [1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016];
+
+    function setGlobal(){
         d3.csv("data/CountryDataByYear.csv", function (error, cData) {
             d3.csv("data/countries.csv", function (error, countries) {
 
@@ -18,38 +63,167 @@
                     _country = c;
                     var cDataFiltered = cData.filter(function(d){return d["Country Name"] ==_country.Country;});
 
-                    options = [];
+                    if(cDataFiltered.length != 0) {
 
-                    cDataFiltered.forEach(function(d, i){
-                        var o ={};
-                        o.Name = d["Series Name"];
-                        o.Years = {};
+                        options = [];
 
-                        for(var i = 1990; i<= 2016; i++){
-                            o.Years[i] = d[i + " [YR" + i + "]"];
-                        }
-                        options.push(o);
-                    });
+                        cDataFiltered.forEach(function (d, i) {
+                            var o = {};
+                            o.Name = d["Series Name"];
+                            o.Years = {};
+
+                            for (var i = 1990; i <= 2016; i++) {
+                                o.Years[i] = d[i + " [YR" + i + "]"];
+                            }
+                            options.push(o);
+                        });
 
 
-                    var cPack = {};
-                    cPack.Name = c["Country"];
-                    cPack.Code = c["Country code"];
-                    cPack.Info = c;
-                    cPack.Options = options;
-                    country_data.push(cPack);
+                        var cPack = {};
+                        cPack.Name = c["Country"];
+                        cPack.Code = cDataFiltered[0]["Country Code"];
+                        cPack.Info = c;
+                        cPack.Options = options;
+                        country_data.push(cPack);
+                    }
                 });
-
+                map_tooltip("USA",1970,"2000");
 
             });
         });
     }
 
+    function YearArray(Years,start_year,end_year){
+        var yearArr = [];
 
-        map_tooltip("","","");
+        //Put years object into an array
+        for(var i = 0; i< years.length; i++){
+
+        //Only grab years within our bounds
+        if(years[i] >= start_year && end_year >=years[i])
+            yearArr[i] = Years[years[i]];
+        }
+
+        return yearArr.filter(function(dd){return dd !== ""; });
+    }
+
+    function OptionMax(option,start_year,end_year){
+        return d3.max(option,function(d){
+            return d3.max(d.Years);
+        });
+    }
+
+
+    function map_tooltip(country_code, start_year, end_year){
+        var svgWidth = 250;
+        var svgHeight = 250;
+
+        var country = country_data.filter(function(d) {return d.Code.toLowerCase() === country_code.toLowerCase();})[0];
+        var options = country.Options;
+
+        var FuelTypes = OptionEnum.FuelTypes;
+        var CombustionFactors = OptionEnum.CombustionFactors;
+
+        var FuelTypeOptions =options.filter(function(d){
+            return d.Name === FuelTypes.CO2_by_gaseousFuel ||
+                   d.Name === FuelTypes.CO2_by_liquidFuel ||
+                   d.Name === FuelTypes.CO2_by_solidFuel;
+        });
+        FuelTypeOptions = FuelTypeOptions.filter(function(d){
+            //Clean up data
+            d.Years = YearArray(d.Years,start_year,end_year);
+            return true;
+        });
+        var CombustionFactorOptions = options.filter(function(d){
+            return  d.Name === CombustionFactors.CO2_by_buildingsPublicServices ||
+                    d.Name === CombustionFactors.CO2_by_elec ||
+                    d.Name === CombustionFactors.CO2_by_manufacturing ||
+                    d.Name === CombustionFactors.CO2_by_otherSectors
+        });
+        //TODO Should be 4 sectors
+        CombustionFactorOptions = CombustionFactorOptions.filter(function(d){
+            //Clean up data
+            d.Years = YearArray(d.Years,start_year,end_year);
+            return true;
+        });
+
+        var FuelTypeMax = OptionMax(FuelTypeOptions,start_year,end_year);
+        var CombustionFactorMax = OptionMax(CombustionFactorOptions,start_year,end_year);
+
+
+        var xFuelTypeScale  = d3.scaleLinear()
+                .range([0,svgWidth])
+                .domain([0,FuelTypeMax]);
+
+        var xCombustionFactorScale = d3.scaleLinear()
+                .range([0,svgWidth])
+                .domain([0,CombustionFactorMax]);
+
+
+        //Chart Elements
+        var FuelTypesChart = d3.select("#FuelTypes");
+        var CombustionFactorsChart = d3.select("#CombustionFactors");
+
+        //Creates SVG Element within the DIV
+        var FuelTypesSVG = FuelTypesChart.append("svg")
+                .attr("width",svgWidth)
+                .attr("height",svgHeight)
+
+        var CombustionFactorsSVG = CombustionFactorsChart.append("svg")
+                .attr("width",svgWidth)
+                .attr("height",svgHeight)
+
+
+        //Build CHARTS
+        FuelTypesSVG.selectAll("rect")
+                .data(FuelTypeOptions)
+                .enter()
+                .append("rect")
+                .attr("height",function(){return svgHeight/FuelTypeOptions.length;})
+                .attr("width",function(d){return xFuelTypeScale(d3.max(d.Years));})
+                .attr("x",0)
+                .attr("y",function(d,i){return svgHeight/FuelTypeOptions.length*i;})
+                .attr("class",function(d,i){
+                    if(i%2==0)return "bar";
+                    return "bar";
+                })
+
+        CombustionFactorsSVG.selectAll("rect")
+                .data(CombustionFactorOptions)
+                .enter()
+                .append("rect")
+                .attr("height",function(){return svgHeight/CombustionFactorOptions.length;})
+                .attr("width",function(d){
+                    return xCombustionFactorScale(d3.sum(d.Years)/ d.Years.length);})
+                .attr("x",0)
+                .attr("y",function(d,i){return svgHeight/CombustionFactorOptions.length*i;})
+                .attr("class",function(d,i){
+                    if(i%2==0)return "bar";
+                    return "bar";
+                })
+
+    }
+
+
+    setGlobal();
+
 </script>
 
 
-<svg id="state_tooltip"></svg>
+
+
+<div style="height: 50px"></div>
+<div class="container">
+    <div class="row" style="stroke-width: 2px; stroke: black">
+        <div class="col-md-6">
+            <div id="FuelTypes"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="CombustionFactors"></div>
+        </div>
+    </div>
+</div>
+
+
 </body>
 </html>
