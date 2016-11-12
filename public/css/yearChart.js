@@ -153,7 +153,8 @@ YearChart.prototype.update = function(){
 
             //Election information corresponding to that year should be loaded and passed to
             // the update methods of other visualizations
-            d3.csv("data/Year_Timeline_" + d.YEAR + ".csv", function (error, electionResult) {
+            d3.csv("data/Year_Timeline_" + d.YEAR + ".csv", function (error, election
+            Result) {
                 electionResult.forEach(function(d) {
                     d.Total_EV = parseInt(d.Total_EV);
                     d.RD_Difference = parseFloat(d.RD_Difference);
