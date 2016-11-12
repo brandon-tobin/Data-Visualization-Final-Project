@@ -203,17 +203,15 @@ h3{
 }
 
 /*Just some CSS to tidy up */
-/*#electoral-vote svg {*/
-    /*height: 0px;*/
-/*}*/
-/*#votes-percentage svg {*/
-    /*height: 0px;*/
-
-/*}*/
-/*#year-chart svg {*/
-    /*height: 50px;*/
-/*}*/
-#wordCloud {
-    font-family:"Lucida Grande","Droid Sans",Arial,Helvetica,sans-serif;
+#electoral-vote svg {
+    height: 0px;
 }
+#votes-percentage svg {
+    height: 0px;
+
+}
+#year-chart svg {
+    height: 50px;
+}
+
 
