@@ -1,31 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
     <meta charset="UTF-8">
     <title>Visualization - Final Project</title>
     <link rel="stylesheet" href="public/css/style.css"/>
-    <!--<script src="https://d3js.org/d3.v4.min.js"></script>-->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
     <script type="text/javascript" src="bower_components/d3/d3.js"></script>
     <script type="text/javascript" src="bower_components/d3-tip/index.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.19/topojson.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <!--This is stuff for the wordCloud, it lets the word cloud work, but kills the map...-->
+    <!--<script src="http://d3js.org/d3.v3.min.js"></script>-->
+    <!--<script src="public/d3.layout.cloud.js"></script>-->
 </head>
 
 <body>
 
-<h1>World Emissions Data (Insert Cooler Title Here)</h1>
-<p class="info">Name: Team Info; E-Mail: Team Info; UID: Team Info</p>
+<h1 id="title">Climate Change Players</h1>
+
 <div id="year-chart" class="view">
 </div>
 
 
-
 <div id = "shiftChart" class = "view">
-    <h3>Brush selection is: </h3>
-    <span id="stateList"></span>
 </div>
 
 <div id = "electoral-vote" class = "view">
@@ -34,7 +34,51 @@
 
 <div id = "votes-percentage" class = "view">
 </div>
+<!--I tried to integrate the word cloud here but it wasn't working-->
+<div id= "wordCloud" class = "view">
 
+
+</div>
+<script>
+
+    d3.csv("public/words.csv", function(rows) {
+
+        console.log("rows: ", rows);
+
+        var color = d3.scale.linear()
+                .domain([0,1,2,3,4,5,6,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,100])
+                .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+
+        d3.layout.cloud().size([800, 350])
+                .words(rows)
+                .rotate(0)
+                .fontSize(function(d) { return d.size; })
+                .on("end", draw)
+                .start();
+
+        function draw(words) {
+            d3.select("#wordCloud").append("svg")
+                    .attr("width", 800)
+                    .attr("height", 350)
+                    .attr("class", "wordcloud")
+                    .append("g")
+                    // without the transform, words words would get cutoff to the left and top, they would
+                    // appear outside of the SVG area
+                    .attr("transform", "translate(320,200)")
+                    .selectAll("text")
+                    .data(words)
+                    .enter().append("text")
+                    .style("font-size", function(d) { return d.size + "px"; })
+                    .style("fill", function(d, i) { return color(i); })
+                    .attr("transform", function(d) {
+                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                    })
+                    .text(function(d) { return d.text; });
+        }
+
+    });
+
+</script>
 
 <div id = "worldChart" class = "view">
     <h1>CO2 Emissions (kt)</h1>
@@ -88,14 +132,20 @@
     <div id="legend" class = "view"></div>
     <div id = "tiles" class = "view"></div>
 </div>
-
 <script type="application/javascript" src="public/js/worldChart.js"></script>
 <script type="application/javascript" src="public/js/electoralVoteChart.js"></script>
 <script type="application/javascript" src="public/js/yearChart.js"></script>
 <script type="application/javascript" src="public/js/votePercentageChart.js"></script>
 <script type="application/javascript" src="public/js/shiftChart.js"></script>
-<script type="application/javascript" src="public/js/main.js">
+<script type="application/javascript" src="public/js/main.js"></script>
 
-</script>
+
+
+<p class="info">Matt Howa : U0805396, matt.j.howa@gmail.com,
+    </br> Brandon Tobin : U0820304, brandontobin@cox.net,
+    </br> Matt Wilden : U0920335, willdenms@gmail.com,
+    </br><a id="GitHub_link" href="https://github.com/willdenms/dataviscourse-pr-climate_change_players.git">Github</a></p>
+
+
 </body>
 </html>
