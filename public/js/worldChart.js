@@ -3,6 +3,8 @@ var global_country_codes = "";
 var global_world = "";
 var global_world_map_self = "";
 
+var global_country_data = "";
+
 /**
  * Constructor for the WorldChart
  */
@@ -32,8 +34,8 @@ WorldChart.prototype.init = function(){
     // self.svgHeight = self.svgWidth/2;
     // var legendHeight = 150;
 
-    self.svgWidth = 1500;
-    self.svgHeight = 1500 / 2;
+    self.svgWidth = 500;
+    self.svgHeight = 500;
     var legendHeight = 150;
 
     //creates svg elements within the div
@@ -142,7 +144,15 @@ WorldChart.prototype.update = function(country_data, colorScale){
     //         return self.tooltip_render(tooltip_data);
     //     });
 
-    return self.readMapData(country_data, colorScale);
+    // Change method to setup!!!
+    global_country_data = country_data;
+
+    queue()
+        .defer(d3.json, "data/newWorldCoords.json")
+        .defer(d3.tsv, "data/newWorldCountryNames.tsv")
+        .await(self.drawMap);
+
+    // return self.readMapData(country_data, colorScale);
 };
 
 function updateMap (year, selected_data) {
@@ -205,12 +215,25 @@ function updateMap (year, selected_data) {
         });
 }
 
-WorldChart.prototype.drawMap = function(world, countryCodes, country_data, year) {
-    global_data = country_data;
+WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data, year) {
+    global_data = global_country_data;
     global_country_codes = countryCodes;
     global_world = world;
     var mapYear = "";
-    var self = this;
+    var self = global_world_map_self;
+
+    // console.log(world);
+    // console.log(countryCodes);
+    // console.log(global_data);
+
+    var countries = topojson.feature(world, world.objects.countries).features;
+    // var countryById = {};
+    // countryCodes.forEach(function (d) {
+    //     countryById[d.id] = d.name;
+    //     option = country
+    // })
+
+    // console.log(countries);
 
     if (year === undefined || year === null || year === "") {
         mapYear = parseInt(2013);
@@ -220,13 +243,13 @@ WorldChart.prototype.drawMap = function(world, countryCodes, country_data, year)
         mapYear = parseInt(year);
     }
 
-    var min = d3.min(country_data, function (d) {
+    var min = d3.min(global_data, function (d) {
         if (d.Options.length > 0) {
             return parseInt(d.Options[2].Years[mapYear]);
         }
     });
 
-    var max = d3.max(country_data, function (d) {
+    var max = d3.max(global_data, function (d) {
             if (d.Options.length > 0) {
                 return parseInt(d.Options[2].Years[mapYear]);
             }
@@ -234,9 +257,18 @@ WorldChart.prototype.drawMap = function(world, countryCodes, country_data, year)
 
     // colorScale.domain([min, max]);
 
-    projection = d3.geoEquirectangular()
-        .scale(self.svgHeight / Math.PI)
-        .translate([self.svgWidth / 2, self.svgHeight / 2]);
+    // projection = d3.geoEquirectangular()
+    //     .scale(self.svgHeight / Math.PI)
+    //     .translate([self.svgWidth / 2, self.svgHeight / 2]);
+    //
+    // var path = d3.geoPath()
+    //     .projection(projection);
+
+    var projection = d3.geoOrthographic()
+        .scale(245)
+        .rotate([0, 0])
+        .translate([self.svgWidth / 2, self.svgHeight / 2])
+        .clipAngle(90);
 
     var path = d3.geoPath()
         .projection(projection);
@@ -258,7 +290,8 @@ WorldChart.prototype.drawMap = function(world, countryCodes, country_data, year)
     var svg = self.svg;
 
     svg.selectAll("path")
-        .data(topojson.feature(world, world.objects.countries).features)
+        .data(countries)
+        // .data(topojson.feature(world, world.objects.countries).features)
         .enter()
         .append("path")
         .attr("d", path)
@@ -267,7 +300,7 @@ WorldChart.prototype.drawMap = function(world, countryCodes, country_data, year)
         })
         .attr("stroke", "#f7f7f7")
         .attr("fill", function (d) {
-            var data = findData(d, countryCodes, country_data);
+            var data = findData(d, countryCodes, global_data);
 
             if (data === undefined || data === null || data.Options.length == 0) {
                 return "#d9d9d9";
@@ -283,31 +316,40 @@ WorldChart.prototype.drawMap = function(world, countryCodes, country_data, year)
                 }
             }
         })
+        .call(d3.drag()
+            .subject(function() { var r = projection.rotate(); return {x: r[0] / .25, y: -r[1] / .25}; })
+            .on("drag", function() {
+                var rotate = projection.rotate();
+                projection.rotate([d3.event.x * .25, -d3.event.y * .25, rotate[2]]);
+                svg.selectAll("path").attr("d", path);
+                // svg.selectAll(".focused").classed("focused", focused = false);
+            }))
         .on("click", function (d, i) {
-            var country_name = findData(d, countryCodes, country_data);
+            var country_name = findData(d, countryCodes, global_data);
             console.log(country_name);
         });
 };
 
-WorldChart.prototype.readMapData = function(country_data, colorScale) {
-    var self = this;
-
-    d3.json("data/world.json", function (error, world) {
-        d3.csv("data/CountryCodes.csv", function (error, countryCodes) {
-            if (error) throw error;
-            self.drawMap(world, countryCodes, country_data, colorScale);
-        })
-    });
-};
+// WorldChart.prototype.readMapData = function(country_data, colorScale) {
+//     var self = this;
+//
+//     d3.json("data/world.json", function (error, world) {
+//         d3.csv("data/CountryCodes.csv", function (error, countryCodes) {
+//             if (error) throw error;
+//             self.drawMap(world, countryCodes, country_data, colorScale);
+//         })
+//     });
+// };
 
 function findData (d, countryCodes, country_data)
 {
     var country_name = "";
     for (var j = 0; j < countryCodes.length; j++)
     {
-        if (countryCodes[j].CodeThree == d.id)
+        if (countryCodes[j].id == d.id)
         {
-            country_name = countryCodes[j].Name;
+            country_name = countryCodes[j].name;
+            console.log(country_name);
             break;
         }
     }
