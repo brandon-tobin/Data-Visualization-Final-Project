@@ -71,24 +71,6 @@ WorldChart.prototype.chooseClass = function (party) {
 }
 
 /**
- * Renders the HTML content for tool tip.
- *
- * @param tooltip_data information that needs to be populated in the tool tip
- * @return text HTML content for tool tip
- */
-WorldChart.prototype.tooltip_render = function (tooltip_data) {
-    var self = this;
-    var text = "<h2 class ="  + self.chooseClass(tooltip_data.winner) + " >" + tooltip_data.state + "</h2>";
-    text +=  "Electoral Votes: " + tooltip_data.electoralVotes;
-    text += "<ul>";
-    tooltip_data.result.forEach(function(row){
-        text += "<li class = " + self.chooseClass(row.party)+ ">" + row.nominee+":\t\t"+row.votecount+"("+row.percentage+"%)" + "</li>"
-    });
-    text += "</ul>";
-    return text;
-}
-
-/**
  * Creates tiles and tool tip for each state, legend for encoding the color scale information.
  *
  * @param electionResult election data for the year selected
@@ -97,53 +79,6 @@ WorldChart.prototype.tooltip_render = function (tooltip_data) {
 WorldChart.prototype.update = function(country_data, colorScale){
     var self = this;
 
-    //Calculates the maximum number of columns to be laid out on the svg
-    // self.maxColumns = d3.max(electionResult,function(d){
-    //     return parseInt(d["Space"]);
-    // });
-    //
-    // //Calculates the maximum number of rows to be laid out on the svg
-    // self.maxRows = d3.max(electionResult,function(d){
-    //     return parseInt(d["Row"]);
-    // });
-    //for reference:https://github.com/Caged/d3-tip
-    //Use this tool tip element to handle any hover over the chart
-    // tip = d3.tip().attr('class', 'd3-tip')
-    //     .direction('se')
-    //     .offset(function() {
-    //         return [0,0];
-    //     })
-    //     .html(function(d) {
-    //         // console.log(d);
-    //         var tooltip_data = "";
-    //         if (d.I_Votes == 0)
-    //         {
-    //             tooltip_data = {
-    //                 "state": d.State,
-    //                 "winner": d.State_Winner,
-    //                 "electoralVotes": d.Total_EV,
-    //                 "result":[
-    //                     {"nominee": d.D_Nominee_prop,"votecount": d.D_Votes,"percentage": d.D_Percentage,"party":"D"} ,
-    //                     {"nominee": d.R_Nominee_prop,"votecount": d.R_Votes,"percentage": d.R_Percentage,"party":"R"}
-    //                 ]};
-    //
-    //         }
-    //         else
-    //         {
-    //             tooltip_data = {
-    //                 "state": d.State,
-    //                 "winner": d.State_Winner,
-    //                 "electoralVotes": d.Total_EV,
-    //                 "result":[
-    //                     {"nominee": d.D_Nominee_prop,"votecount": d.D_Votes,"percentage": d.D_Percentage,"party":"D"} ,
-    //                     {"nominee": d.R_Nominee_prop,"votecount": d.R_Votes,"percentage": d.R_Percentage,"party":"R"} ,
-    //                     {"nominee": d.I_Nominee_prop,"votecount": d.I_Votes,"percentage": d.I_Percentage,"party":"I"}
-    //                 ]};
-    //
-    //         }
-    //         return self.tooltip_render(tooltip_data);
-    //     });
-
     // Change method to setup!!!
     global_country_data = country_data;
 
@@ -151,8 +86,6 @@ WorldChart.prototype.update = function(country_data, colorScale){
         .defer(d3.json, "data/newWorldCoords.json")
         .defer(d3.tsv, "data/newWorldCountryNames.tsv")
         .await(self.drawMap);
-
-    // return self.readMapData(country_data, colorScale);
 };
 
 function updateMap (year, selected_data) {
@@ -222,18 +155,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
     var mapYear = "";
     var self = global_world_map_self;
 
-    // console.log(world);
-    // console.log(countryCodes);
-    // console.log(global_data);
-
     var countries = topojson.feature(world, world.objects.countries).features;
-    // var countryById = {};
-    // countryCodes.forEach(function (d) {
-    //     countryById[d.id] = d.name;
-    //     option = country
-    // })
-
-    // console.log(countries);
 
     if (year === undefined || year === null || year === "") {
         mapYear = parseInt(2013);
@@ -255,15 +177,6 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
             }
     });
 
-    // colorScale.domain([min, max]);
-
-    // projection = d3.geoEquirectangular()
-    //     .scale(self.svgHeight / Math.PI)
-    //     .translate([self.svgWidth / 2, self.svgHeight / 2]);
-    //
-    // var path = d3.geoPath()
-    //     .projection(projection);
-
     var projection = d3.geoOrthographic()
         .scale(245)
         .rotate([0, 0])
@@ -273,11 +186,6 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
     var path = d3.geoPath()
         .projection(projection);
 
-    // var colorScale = d3.scaleLinear()
-    //     .domain([min, max])
-    //     .range(["#f2d7d5", "#641e16"]);
-
-
     colors = ["#ffe6e6", "#ffcccc","#ffb3b3","#ff8080", "#ff4d4d","#ff1a1a","#e60000","#b30000","#800000"];
 
     var buckets = 100000;
@@ -286,15 +194,16 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
         .domain([min, buckets - 1, max])
         .range(colors);
 
+    var graticule = d3.geoGraticule();
 
     var svg = self.svg;
 
     svg.selectAll("path")
         .data(countries)
-        // .data(topojson.feature(world, world.objects.countries).features)
         .enter()
         .append("path")
         .attr("d", path)
+        .attr("class", "country")
         .attr("id", function (d) {
             return (d.id);
         })
@@ -321,25 +230,20 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
             .on("drag", function() {
                 var rotate = projection.rotate();
                 projection.rotate([d3.event.x * .25, -d3.event.y * .25, rotate[2]]);
-                svg.selectAll("path").attr("d", path);
-                // svg.selectAll(".focused").classed("focused", focused = false);
+
+                svg.selectAll(".graticule").attr("d", path);
+                svg.selectAll(".country").attr("d", path);
             }))
         .on("click", function (d, i) {
             var country_name = findData(d, countryCodes, global_data);
             console.log(country_name);
         });
-};
 
-// WorldChart.prototype.readMapData = function(country_data, colorScale) {
-//     var self = this;
-//
-//     d3.json("data/world.json", function (error, world) {
-//         d3.csv("data/CountryCodes.csv", function (error, countryCodes) {
-//             if (error) throw error;
-//             self.drawMap(world, countryCodes, country_data, colorScale);
-//         })
-//     });
-// };
+    svg.insert("path", "path.countries")
+        .datum(graticule)
+        .attr("class", "graticule")
+        .attr("d", path);
+};
 
 function findData (d, countryCodes, country_data)
 {
@@ -349,7 +253,6 @@ function findData (d, countryCodes, country_data)
         if (countryCodes[j].id == d.id)
         {
             country_name = countryCodes[j].name;
-            console.log(country_name);
             break;
         }
     }
