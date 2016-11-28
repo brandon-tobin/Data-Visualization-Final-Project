@@ -29,11 +29,6 @@ WorldChart.prototype.init = function(){
     var legend = d3.select("#legend").classed("content",true);
     self.margin = {top: 30, right: 20, bottom: 30, left: 50};
 
-    // var svgBounds = divTileChart.node().getBoundingClientRect();
-    // self.svgWidth = svgBounds.width - self.margin.left - self.margin.right;
-    // self.svgHeight = self.svgWidth/2;
-    // var legendHeight = 150;
-
     self.svgWidth = 500;
     self.svgHeight = 500;
     var legendHeight = 150;
@@ -195,6 +190,16 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
 
     var graticule = d3.geoGraticule();
 
+    var drag = d3.drag()
+        .subject(function() { var r = projection.rotate(); return {x: r[0] / .25, y: -r[1] / .25}; })
+        .on("drag", function() {
+            var rotate = projection.rotate();
+            projection.rotate([d3.event.x * .25, -d3.event.y * .25, rotate[2]]);
+
+            svg.selectAll(".graticule").attr("d", path);
+            svg.selectAll(".country").attr("d", path);
+        });
+
     //Tooltip Div
     var div = d3.select("body").append("div")
         .attr("class", "tooltip")
@@ -229,15 +234,6 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
                 }
             }
         })
-        .call(d3.drag()
-            .subject(function() { var r = projection.rotate(); return {x: r[0] / .25, y: -r[1] / .25}; })
-            .on("drag", function() {
-                var rotate = projection.rotate();
-                projection.rotate([d3.event.x * .25, -d3.event.y * .25, rotate[2]]);
-
-                svg.selectAll(".graticule").attr("d", path);
-                svg.selectAll(".country").attr("d", path);
-            }))
         .on("click", function (d, i) {
             var country_name = findData(d, countryCodes, global_data);
             console.log(country_name);
@@ -268,6 +264,8 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
         .datum(graticule)
         .attr("class", "graticule")
         .attr("d", path);
+
+    svg.call(drag);
 };
 
 function findData (d, countryCodes, country_data)
