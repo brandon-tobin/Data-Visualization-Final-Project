@@ -10,23 +10,13 @@
      */
     function init() {
         //Creating instances for each visualization
-        var votePercentageChart = new VotePercentageChart();
+        // var votePercentageChart = new VotePercentageChart();
 
-        var tileChart = new WorldChart();
+        var worldChart = new WorldChart();
 
-        var shiftChart = new ShiftChart();
+        var wordCloud = new WordCloud(worldChart);
+        wordCloud.update();
 
-        var electoralVoteChart = new ElectoralVoteChart(shiftChart);
-
-
-
-        //load the data corresponding to all the election years
-        //pass this data and instances of all the charts that update on year selection to yearChart's constructor
-        d3.csv("data/yearwiseWinner.csv", function (error, electionWinners) {
-            //pass the instances of all the charts that update on selection change in YearChart
-            var yearChart = new YearChart(electoralVoteChart, tileChart, votePercentageChart, electionWinners);
-            yearChart.update();
-        });
     }
 
     /**

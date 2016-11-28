@@ -25,7 +25,7 @@ WorldChart.prototype.init = function(){
     var self = this;
 
     //Gets access to the div element created for this chart and legend element from HTML
-    var divTileChart = d3.select("#tiles").classed("content", true);
+    var divWorldChart = d3.select("#world").classed("content", true);
     var legend = d3.select("#legend").classed("content",true);
     self.margin = {top: 30, right: 20, bottom: 30, left: 50};
 
@@ -39,7 +39,7 @@ WorldChart.prototype.init = function(){
         .attr("height",legendHeight)
         .attr("transform", "translate(" + self.margin.left + ",0)");
 
-    self.svg = divTileChart.append("svg")
+    self.svg = divWorldChart.append("svg")
         .attr("width",self.svgWidth)
         .attr("height",self.svgHeight)
         .attr("transform", "translate(" + self.margin.left + ",0)")
@@ -48,30 +48,12 @@ WorldChart.prototype.init = function(){
 };
 
 /**
- * Returns the class that needs to be assigned to an element.
- *
- * @param party an ID for the party that is being referred to.
- */
-WorldChart.prototype.chooseClass = function (party) {
-    var self = this;
-    if (party == "R"){
-        return "republican";
-    }
-    else if (party== "D"){
-        return "democrat";
-    }
-    else if (party == "I"){
-        return "independent";
-    }
-}
-
-/**
  * Creates tiles and tool tip for each state, legend for encoding the color scale information.
  *
  * @param electionResult election data for the year selected
  * @param colorScale global quantile scale based on the winning margin between republicans and democrats
  */
-WorldChart.prototype.update = function(country_data, colorScale){
+WorldChart.prototype.update = function(country_data){
     var self = this;
 
     // Change method to setup!!!

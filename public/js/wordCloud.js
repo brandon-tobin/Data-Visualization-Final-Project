@@ -7,20 +7,18 @@
  * @param electionInfo instance of ElectionInfo
  * @param electionWinners data corresponding to the winning parties over mutiple election years
  */
-function YearChart(electoralVoteChart, tileChart, votePercentageChart, electionWinners) {
+function WordCloud(tileChart) {
     var self = this;
 
-    self.electoralVoteChart = electoralVoteChart;
     self.tileChart = tileChart;
-    self.votePercentageChart = votePercentageChart;
-    self.electionWinners = electionWinners;
+
     self.init();
 };
 
 /**
  * Initializes the svg elements required for this chart
  */
-YearChart.prototype.init = function(){
+WordCloud.prototype.init = function(){
 
     var self = this;
     self.margin = {top: 10, right: 20, bottom: 30, left: 50};
@@ -39,28 +37,9 @@ YearChart.prototype.init = function(){
 };
 
 /**
- * Returns the class that needs to be assigned to an element.
- *
- * @param party an ID for the party that is being referred to.
- */
-YearChart.prototype.chooseClass = function (party) {
-    var self = this;
-    if (party == "R") {
-        return "yearChart republican";
-    }
-    else if (party == "D") {
-        return "yearChart democrat";
-    }
-    else if (party == "I") {
-        return "yearChart independent";
-    }
-}
-
-
-/**
  * Creates a chart with circles representing each election year, populates text content and other required elements for the Year Chart
  */
-YearChart.prototype.update = function(){
+WordCloud.prototype.update = function(){
     var self = this;
 
     d3.csv("data/CountryDataByYear.csv", function (error, cData) {
@@ -116,8 +95,8 @@ YearChart.prototype.update = function(){
     // self.colorScale = d3.scaleQuantile()
     //     .domain(domain).range(range);
 
-    self.colorScale = d3.scaleLinear()
-        .range(["#cd6155", "#641e16"]);
+    // self.colorScale = d3.scaleLinear()
+    //     .range(["#cd6155", "#641e16"]);
         // .range(["yellow", "red", "darkred", "green"]);
 
     // ******* PART I *******
@@ -125,15 +104,15 @@ YearChart.prototype.update = function(){
     //Style the chart by adding a dashed line that connects all these years.
     //HINT: Use .lineChart to style this dashed line
 
-    var pathData = [ { "x": 0,   "y": 50},  { "x": self.svgWidth,  "y": 50}];
-
-    var pathFunction = d3.line()
-        .x(function(d) { return d.x; })
-        .y(function(d) { return d.y; });
-
-    self.svg.append("path")
-        .attr("d", pathFunction(pathData))
-        .classed("lineChart", true);
+    // var pathData = [ { "x": 0,   "y": 50},  { "x": self.svgWidth,  "y": 50}];
+    //
+    // var pathFunction = d3.line()
+    //     .x(function(d) { return d.x; })
+    //     .y(function(d) { return d.y; });
+    //
+    // self.svg.append("path")
+    //     .attr("d", pathFunction(pathData))
+    //     .classed("lineChart", true);
 
     // var xScale = d3.scaleLinear()
     //     .domain([0, self.electionWinners.length])
