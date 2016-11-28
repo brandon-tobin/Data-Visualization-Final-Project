@@ -160,8 +160,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
     if (year === undefined || year === null || year === "") {
         mapYear = parseInt(2013);
     }
-    else
-    {
+    else{
         mapYear = parseInt(year);
     }
 
@@ -195,6 +194,11 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
         .range(colors);
 
     var graticule = d3.geoGraticule();
+
+    //Tooltip Div
+    var div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
 
     var svg = self.svg;
 
@@ -237,6 +241,27 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
         .on("click", function (d, i) {
             var country_name = findData(d, countryCodes, global_data);
             console.log(country_name);
+        })
+        .on("mouseover", function(d) {
+            div.transition()
+                .duration(200)
+                .style("opacity", .9);
+            div	.html("<div id='FuelTypes'></div>"+
+                    "<div id='CombustionFactors'></div>")
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY - 28) + "px");
+
+            var country_name = findData(d, countryCodes, global_data);
+            //TODO grab correct years
+            map_tooltip(country_name.CodeThree, 1999, 2001)
+        })
+        .on("mouseout", function(d) {
+            //TODO only do this when changing years scrubbed
+            //setGlobal();
+            div.transition()
+                .duration(500)
+                .style("opacity", 0);
+            div.html("");
         });
 
     svg.insert("path", "path.countries")

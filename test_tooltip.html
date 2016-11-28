@@ -17,12 +17,16 @@
         stroke: whitesmoke;
         text-replace: 5px;
     }
+    .xAxis{
+        font-weight: 100;
+
+    }
 
 </style>
 
 
 
-<script type="application/javascript">
+<script type="application/javascript" >
     OptionEnum = {
 
         CO2_Total_kt : "CO2 emissions (kt)",
@@ -32,13 +36,28 @@
             CO2_by_gaseousFuel: "CO2 emissions from gaseous fuel consumption (% of total)",
             CO2_by_liquidFuel: "CO2 emissions from liquid fuel consumption (% of total)",
             CO2_by_solidFuel: "CO2 emissions from solid fuel consumption (% of total)",
+
+            Chart: {
+                Title:"Fuel Consumption (% of country total)",
+                CO2_by_gaseousFuel: "Gaseous",
+                CO2_by_liquidFuel: "Liquid fuel",
+                CO2_by_solidFuel: "Solid",
+            }
         },
 
         CombustionFactors : {
             CO2_by_elec: "CO2 emissions from electricity and heat production, total (% of total fuel combustion)",
             CO2_by_manufacturing: "CO2 emissions from manufacturing industries and construction (% of total fuel combustion)",
-            CO2_by_buildingsPublicServices: "CO2 emissions from other sectors, excluding residential buildings and commercial and public services (% of total fuel combustion)",
-            CO2_by_otherSectors : " CO2 emissions from other sectors, excluding residential buildings and commercial and public services (% of total fuel combustion)",
+            CO2_by_buildingsPublicServices: "CO2 emissions from residential buildings and commercial and public services (% of total fuel combustion)",
+            CO2_by_otherSectors : "CO2 emissions from other sectors, excluding residential buildings and commercial and public services (% of total fuel combustion)",
+
+            Chart:{
+                Title:"Fuel Consumption by (% of country total)",
+                CO2_by_elec: "Electricity and Heat",
+                CO2_by_manufacturing: "Manufacturing and Construction",
+                CO2_by_buildingsPublicServices: "Buildings and Public services",
+                CO2_by_otherSectors : " Other Sectors",
+            }
         },
 
         Population : "Population, total",
@@ -87,7 +106,7 @@
                         country_data.push(cPack);
                     }
                 });
-                map_tooltip("USA",1970,"2000");
+
 
             });
         });
@@ -104,19 +123,32 @@
             yearArr[i] = Years[years[i]];
         }
 
-        return yearArr.filter(function(dd){return dd !== ""; });
+        yearArr = yearArr.filter(function(dd){
+            return dd !== ""; });
+
+        return yearArr;
     }
 
     function OptionMax(option,start_year,end_year){
-        return d3.max(option,function(d){
-            return d3.max(d.Years);
+
+        var max = d3.max(option,function(d) {
+            return d3.max(d.Years, function (y) {
+                return parseFloat(y);
+            });
         });
+        return max;
     }
 
 
     function map_tooltip(country_code, start_year, end_year){
-        var svgWidth = 250;
-        var svgHeight = 250;
+        var svgWidth = 350;
+        var svgHeight = 150;
+        var xAxis = 120;
+        var yAxis = 40;
+
+        var ColorScale = d3.scaleLinear()
+                .range(['#9e9798', '#a0030d'])
+                .domain([0,50])
 
         var country = country_data.filter(function(d) {return d.Code.toLowerCase() === country_code.toLowerCase();})[0];
         var options = country.Options;
@@ -131,6 +163,8 @@
         });
         FuelTypeOptions = FuelTypeOptions.filter(function(d){
             //Clean up data
+            if(Array.isArray(d.Years))
+                    return true;
             d.Years = YearArray(d.Years,start_year,end_year);
             return true;
         });
@@ -140,24 +174,18 @@
                     d.Name === CombustionFactors.CO2_by_manufacturing ||
                     d.Name === CombustionFactors.CO2_by_otherSectors
         });
-        //TODO Should be 4 sectors
+
         CombustionFactorOptions = CombustionFactorOptions.filter(function(d){
             //Clean up data
+            if(Array.isArray(d.Years))
+                return true;
             d.Years = YearArray(d.Years,start_year,end_year);
             return true;
         });
 
-        var FuelTypeMax = OptionMax(FuelTypeOptions,start_year,end_year);
-        var CombustionFactorMax = OptionMax(CombustionFactorOptions,start_year,end_year);
-
-
-        var xFuelTypeScale  = d3.scaleLinear()
-                .range([0,svgWidth])
-                .domain([0,FuelTypeMax]);
-
-        var xCombustionFactorScale = d3.scaleLinear()
-                .range([0,svgWidth])
-                .domain([0,CombustionFactorMax]);
+        var xScale  = d3.scaleLinear()
+                .range([0,svgWidth - xAxis -2])
+                .domain([0,50]);
 
 
         //Chart Elements
@@ -174,38 +202,168 @@
                 .attr("height",svgHeight)
 
 
+        //Create Axis
+        var xAxisFuelTypes = d3.axisBottom()
+                .tickFormat(d3.format(".0f"));
+        xAxisFuelTypes.scale(xScale);
+
+        var xAxisCombustionFactors = d3.axisBottom()
+                .tickFormat(d3.format(".0f"));
+        xAxisCombustionFactors.scale(xScale);
+
+        CombustionFactorsSVG.append("g")
+                .attr("transform", "translate(" + xAxis + "," + (svgHeight - yAxis + 15) + ")")
+                .call(xAxisCombustionFactors)
+                .attr("class", "xAxis")
+                .selectAll("text")
+                .style("text-anchor","end")
+                .attr("dx","-1.2em")
+                .attr("dy","-.5em")
+                .attr("transform","rotate(-55)")
+                .style("font-size", "8px")
+
+        FuelTypesSVG.append("g")
+                .attr("transform", "translate(" + xAxis + "," + (svgHeight - yAxis + 15) + ")")
+                .call(xAxisFuelTypes)
+                .attr("class", "xAxis")
+                .selectAll("text")
+                .style("text-anchor","end")
+                .attr("dx","-1.2em")
+                .attr("dy","-.5em")
+                .attr("transform","rotate(-55)")
+                .style("font-size", "8px")
+
         //Build CHARTS
         FuelTypesSVG.selectAll("rect")
                 .data(FuelTypeOptions)
                 .enter()
                 .append("rect")
-                .attr("height",function(){return svgHeight/FuelTypeOptions.length;})
-                .attr("width",function(d){return xFuelTypeScale(d3.max(d.Years));})
-                .attr("x",0)
-                .attr("y",function(d,i){return svgHeight/FuelTypeOptions.length*i;})
+                .attr("transform", "translate(" + 0 + "," + (15) + ")")
+                .attr("height",function(){return (svgHeight-yAxis-5)/FuelTypeOptions.length;})
+                .attr("width",function(d){
+                    return xScale(d3.sum(d.Years)/ d.Years.length);})
+                .attr("x",xAxis)
+                .attr("y",function(d,i){return (svgHeight-yAxis-5)/FuelTypeOptions.length*i;})
                 .attr("class",function(d,i){
-                    if(i%2==0)return "bar";
+                    if(i%2==0) return "bar";
                     return "bar";
                 })
+                .style("fill", function(d){return ColorScale(d3.sum(d.Years)/ d.Years.length)})
+                .selectAll("text")
+                .data(function(d){return d;})
+
+        FuelTypesSVG.append("g")
+                .selectAll("text")
+                .data(FuelTypeOptions)
+                .enter()
+                .append("text")
+                .attr("x", xAxis -5)
+                .attr("y", function(d,i){return (svgHeight-yAxis)/FuelTypeOptions.length*(i+1);})
+                .attr("text-anchor", "end")
+                .text(function(d) {
+                    switch (d.Name){
+                        case OptionEnum.FuelTypes.CO2_by_gaseousFuel:
+                            return OptionEnum.FuelTypes.Chart.CO2_by_gaseousFuel;
+                        case OptionEnum.FuelTypes.CO2_by_liquidFuel:
+                            return OptionEnum.FuelTypes.Chart.CO2_by_liquidFuel;
+                        case OptionEnum.FuelTypes.CO2_by_solidFuel:
+                            return OptionEnum.FuelTypes.Chart.CO2_by_solidFuel;
+                    }
+
+                })
+                .attr("fill", "black")
+                .style("font-size", "8px")
+
+        FuelTypesSVG.append("text")
+                .attr("x", (svgWidth / 2))
+                .attr("y", 10)
+                .attr("text-anchor", "middle")
+                .style("font-size", "11px")
+                .style("text-decoration", "underline")
+                .style("font-weight", "bold")
+                .text(OptionEnum.FuelTypes.Chart.Title);
+
+
 
         CombustionFactorsSVG.selectAll("rect")
                 .data(CombustionFactorOptions)
                 .enter()
                 .append("rect")
-                .attr("height",function(){return svgHeight/CombustionFactorOptions.length;})
-                .attr("width",function(d){
-                    return xCombustionFactorScale(d3.sum(d.Years)/ d.Years.length);})
-                .attr("x",0)
-                .attr("y",function(d,i){return svgHeight/CombustionFactorOptions.length*i;})
+                .attr("transform", "translate(" + 0 + "," + (15) + ")")
+                .attr("height",function(){return (svgHeight-yAxis-5)/CombustionFactorOptions.length;})
+                .attr("width",function(d){return xScale(d3.sum(d.Years)/ d.Years.length);})
+                .attr("x",xAxis)
+                .attr("y",function(d,i){return (svgHeight-yAxis-5)/CombustionFactorOptions.length*i;})
                 .attr("class",function(d,i){
                     if(i%2==0)return "bar";
                     return "bar";
                 })
+                .style("fill", function(d){return ColorScale(d3.sum(d.Years)/ d.Years.length)})
+
+        CombustionFactorsSVG.append("g")
+                .selectAll("text")
+                .data(CombustionFactorOptions)
+                .enter()
+                .append("text")
+                .attr("x", xAxis -5)
+                .attr("y", function(d,i){return (svgHeight-yAxis + 5 )/CombustionFactorOptions.length*(i+1);})
+                .attr("text-anchor", "end")
+                .text(function(d) {
+                    switch (d.Name){
+                        case OptionEnum.CombustionFactors.CO2_by_elec:
+                            return OptionEnum.CombustionFactors.Chart.CO2_by_elec;
+                        case OptionEnum.CombustionFactors.CO2_by_buildingsPublicServices:
+                            return OptionEnum.CombustionFactors.Chart.CO2_by_buildingsPublicServices;
+                        case OptionEnum.CombustionFactors.CO2_by_manufacturing:
+                            return OptionEnum.CombustionFactors.Chart.CO2_by_manufacturing;
+                        case OptionEnum.CombustionFactors.CO2_by_otherSectors:
+                            return OptionEnum.CombustionFactors.Chart.CO2_by_otherSectors;
+                    }
+                })
+                .attr("fill", "black")
+                .style("font-size", "8px")
+
+        CombustionFactorsSVG.append("text")
+                .attr("x", (svgWidth / 2))
+                .attr("y", 10)
+                .attr("text-anchor", "middle")
+                .style("font-size", "11px")
+                .style("font-weight", "bold")
+                .style("text-decoration", "underline")
+                .text(OptionEnum.CombustionFactors.Chart.Title);
 
     }
 
 
     setGlobal();
+
+    $( document ).ready(function() {
+        var div = d3.select("body").append("div")
+                .attr("class", "tooltip")
+                .style("opacity", 0);
+        d3.selectAll("svg")
+                .on("mouseover", function(d) {
+                    div.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                    div	.html("<div id='FuelTypes'></div>"+
+                              "<div id='CombustionFactors'></div>")
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY - 28) + "px");
+
+                    map_tooltip("USA", 1999, 2001)
+                })
+                .on("mouseout", function(d) {
+                    //TODO only do this when changing years scrubbed
+                    //setGlobal();
+                    div.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    div.html("");
+                });
+    });
+
+
 
 </script>
 
@@ -213,17 +371,10 @@
 
 
 <div style="height: 50px"></div>
-<div class="container">
-    <div class="row" style="stroke-width: 2px; stroke: black">
-        <div class="col-md-6">
-            <div id="FuelTypes"></div>
-        </div>
-        <div class="col-md-6">
-            <div id="CombustionFactors"></div>
-        </div>
-    </div>
-</div>
 
 
+<svg height="30" width="200" >
+<rect height="30" width="200" fill="black"></rect>
+</svg>
 </body>
 </html>

@@ -47,6 +47,17 @@ h1 {
     stroke: #eee;
     stroke-width: 4;
 }
+
+.bar{
+    fill: black;
+    stroke: whitesmoke;
+    text-replace: 5px;
+}
+.xAxis{
+    font-weight: 100;
+
+}
+
 .content {
     display: inline-block;
     width: 70%;
