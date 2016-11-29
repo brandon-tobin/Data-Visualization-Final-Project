@@ -4,7 +4,7 @@ var global_world = "";
 var global_world_map_self = "";
 
 var global_country_data = "";
-
+var _colorScale;
 /**
  * Constructor for the WorldChart
  */
@@ -132,6 +132,13 @@ function updateMap (year, selected_data) {
                 }
             }
         });
+
+
+    self.svg.selectAll("rect.swatch")
+        .attr("rx", 10)
+        .attr("ry", 10)
+
+
 }
 
 WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data, year) {
@@ -179,6 +186,8 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
         .domain([min, buckets - 1, max])
         .range(colors);
 
+    _colorScale = colorScale;
+
     // Setup Legend
     self.legendSvg.append("g")
         .attr("class", "legendLinear")
@@ -198,6 +207,8 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
 
     self.legendSvg.select(".legendLinear")
         .call(legendLinear);
+
+
 
     var graticule = d3.geoGraticule();
 
@@ -251,15 +262,18 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
             console.log(country_name);
         })
         .on("mouseover", function(d) {
+            var country_name = findData(d, countryCodes, global_data)
+
             div.transition()
                 .duration(200)
                 .style("opacity", .9);
-            div	.html("<div id='FuelTypes'></div>"+
+            div	.html("<center><h3>"+country_name.Name+"</h3></center>" +
+                "<div id='FuelTypes'></div>"+
                 "<div id='CombustionFactors'></div>")
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
+                .style("left",  self.svgWidth +150+ "px")
+                .style("top", self.svgHeight-250 + "px");
 
-            var country_name = findData(d, countryCodes, global_data);
+            ;
             //TODO grab correct years
             map_tooltip(country_name.CodeThree, 1999, 2001)
         })

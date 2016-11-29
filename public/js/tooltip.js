@@ -120,9 +120,9 @@ function map_tooltip(country_code, start_year, end_year){
     var xAxis = 120;
     var yAxis = 40;
 
-    var ColorScale = d3.scaleLinear()
-        .range(['#9e9798', '#a0030d'])
-        .domain([0,50])
+    var ColorScale = _colorScale;
+
+    ColorScale.domain([0,50]);
 
     var country = country_data.filter(function(d) {return d.Code.toLowerCase() === country_code.toLowerCase();})[0];
     var options = country.Options;
