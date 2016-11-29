@@ -31,7 +31,8 @@ WorldChart.prototype.init = function(){
 
     self.svgWidth = 500;
     self.svgHeight = 500;
-    var legendHeight = 150;
+    // var legendHeight = 150;
+    var legendHeight = self.svgHeight;
 
     //creates svg elements within the div
     self.legendSvg = legend.append("svg")
@@ -67,7 +68,7 @@ WorldChart.prototype.update = function(country_data){
 
 function updateMap (year, selected_data) {
 
-    var svg = global_world_map_self.svg;
+    var self = global_world_map_self;
     var world = global_world;
     var countryCodes = global_country_codes;
     var country_data = global_data;
@@ -103,8 +104,16 @@ function updateMap (year, selected_data) {
         .domain([min, buckets - 1, max])
         .range(colors);
 
+    var legendLinear = d3.legendColor()
+        .shapeWidth(10)
+        .cells(9)
+        .orient('vertical')
+        .scale(colorScale);
 
-    svg.selectAll("path")
+    self.legendSvg.select(".legendLinear")
+        .call(legendLinear);
+
+    self.svg.selectAll("path")
         .data(topojson.feature(world, world.objects.countries).features)
         .attr("fill", function (d) {
             var data = findData(d, countryCodes, country_data);
@@ -117,7 +126,7 @@ function updateMap (year, selected_data) {
                 if (data.Options.length > 0)
                 {
                     if (data.Options[selected_data].Years[mapYear] == "..")
-                        return "#5f6a6a";
+                        return "#d9d9d9";
                     else
                         return colorScale(data.Options[selected_data].Years[mapYear]);
                 }
@@ -148,9 +157,9 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
     });
 
     var max = d3.max(global_data, function (d) {
-            if (d.Options.length > 0) {
-                return parseInt(d.Options[2].Years[mapYear]);
-            }
+        if (d.Options.length > 0) {
+            return parseInt(d.Options[2].Years[mapYear]);
+        }
     });
 
     var projection = d3.geoOrthographic()
@@ -169,6 +178,26 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
     var colorScale = d3.scaleQuantile()
         .domain([min, buckets - 1, max])
         .range(colors);
+
+    // Setup Legend
+    self.legendSvg.append("g")
+        .attr("class", "legendLinear")
+        .attr("transform", "translate(0, 350)");
+
+    var legendLinear = d3.legendColor()
+        .shapeWidth(10)
+        .cells(9)
+        .orient('vertical')
+        .scale(colorScale);
+
+    // var legendLinear = d3.legendColor()
+    //     .shapeWidth(self.svgWidth/9 - 2)
+    //     .cells(9)
+    //     .orient('horizontal')
+    //     .scale(colorScale);
+
+    self.legendSvg.select(".legendLinear")
+        .call(legendLinear);
 
     var graticule = d3.geoGraticule();
 
@@ -210,7 +239,8 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
                 if (data.Options.length > 0)
                 {
                     if (data.Options[2].Years[2013] == "..")
-                        return "#5f6a6a";
+                        return "#d9d9d9";
+                    // return "#5f6a6a";
                     else
                         return colorScale(data.Options[2].Years[mapYear]);
                 }
@@ -225,7 +255,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
                 .duration(200)
                 .style("opacity", .9);
             div	.html("<div id='FuelTypes'></div>"+
-                    "<div id='CombustionFactors'></div>")
+                "<div id='CombustionFactors'></div>")
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY - 28) + "px");
 

@@ -11,7 +11,7 @@ function YearChart(electoralVoteChart, tileChart, votePercentageChart, electionW
     var self = this;
 
     self.electoralVoteChart = electoralVoteChart;
-    self.tileChart = tileChart;
+    self.worldChart = worldChart;
     self.votePercentageChart = votePercentageChart;
     self.electionWinners = electionWinners;
     self.init();
@@ -165,7 +165,7 @@ YearChart.prototype.update = function(){
                 });
                 self.electoralVoteChart.update(electionResult, self.colorScale);
                 self.votePercentageChart.update(electionResult, self.colorScale);
-                self.tileChart.update(electionResult, self.colorScale);
+                self.worldChart.update(electionResult, self.colorScale);
             });
         });
 };

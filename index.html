@@ -8,6 +8,7 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="http://d3js.org/queue.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script>
     <script type="text/javascript" src="public/js/jquery.min.js"></script>
     <script type="text/javascript" src="public/js/tooltip.js"></script>
     <script type="text/javascript" src="bower_components/d3/d3.js"></script>
@@ -137,9 +138,16 @@
             <option value="14">GDP per capita (current US$)</option>
         </select>
     </div>
-    <div id="legend" class = "view"></div>
-    <div id = "world" class = "view"></div>
-</div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-1 col-md-offset-0">
+                <div id="legend" class = "view"></div>
+            </div>
+            <div class="col-md-11">
+                <div id = "world" class = "view"></div>
+            </div>
+        </div>
+    </div>
 <script type="application/javascript" src="public/js/worldChart.js"></script>
 <script type="application/javascript" src="public/js/wordCloud.js"></script>
 <script type="application/javascript" src="public/js/main.js"></script>

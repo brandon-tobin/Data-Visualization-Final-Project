@@ -213,6 +213,13 @@ h3{
     opacity: .2;
 }
 
+.container {
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 /*Just some CSS to tidy up */
 #electoral-vote svg {
     height: 0px;

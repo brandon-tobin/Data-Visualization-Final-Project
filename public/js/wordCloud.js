@@ -2,15 +2,15 @@
  * Constructor for the Year Chart
  *
  * @param electoralVoteChart instance of ElectoralVoteChart
- * @param tileChart instance of WorldChart
+ * @param worldChart instance of WorldChart
  * @param votePercentageChart instance of Vote Percentage Chart
  * @param electionInfo instance of ElectionInfo
  * @param electionWinners data corresponding to the winning parties over mutiple election years
  */
-function WordCloud(tileChart) {
+function WordCloud(worldChart) {
     var self = this;
 
-    self.tileChart = tileChart;
+    self.worldChart = worldChart;
 
     self.init();
 };
@@ -79,7 +79,7 @@ WordCloud.prototype.update = function(){
             });
 
             // console.log(country_data);
-            self.tileChart.update(country_data);
+            self.worldChart.update(country_data);
 
         });
     });
@@ -190,7 +190,7 @@ WordCloud.prototype.update = function(){
             //     });
             //     self.electoralVoteChart.update(electionResult, self.colorScale);
             //     self.votePercentageChart.update(electionResult, self.colorScale);
-            //     self.tileChart.update(electionResult, self.colorScale);
+            //     self.worldChart.update(electionResult, self.colorScale);
             // });
 
 };
