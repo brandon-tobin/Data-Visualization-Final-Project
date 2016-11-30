@@ -28,8 +28,8 @@ OptionEnum = {
         Chart:{
             Title:"Fuel Consumption by (% of country total)",
             CO2_by_elec: "Electricity and Heat",
-            CO2_by_manufacturing: "Manufacturing and Construction",
-            CO2_by_buildingsPublicServices: "Buildings and Public services",
+            CO2_by_manufacturing: "Manufacturing/Construction",
+            CO2_by_buildingsPublicServices: "Buildings/Public services",
             CO2_by_otherSectors : " Other Sectors",
         }
     },
@@ -45,46 +45,9 @@ OptionEnum = {
         CO2_GDP: "CO2 emissions (kg per PPP $ of GDP)",
     }
 }
-years = [1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016];
-
-function setGlobal(){
-    d3.csv("data/CountryDataByYear.csv", function (error, cData) {
-        d3.csv("data/countries.csv", function (error, countries) {
-
-            country_data = [];
-            countries.forEach(function(c,i){
-                _country = c;
-                var cDataFiltered = cData.filter(function(d){return d["Country Name"] ==_country.Country;});
-
-                if(cDataFiltered.length != 0) {
-
-                    options = [];
-
-                    cDataFiltered.forEach(function (d, i) {
-                        var o = {};
-                        o.Name = d["Series Name"];
-                        o.Years = {};
-
-                        for (var i = 1990; i <= 2016; i++) {
-                            o.Years[i] = d[i + " [YR" + i + "]"];
-                        }
-                        options.push(o);
-                    });
 
 
-                    var cPack = {};
-                    cPack.Name = c["Country"];
-                    cPack.Code = cDataFiltered[0]["Country Code"];
-                    cPack.Info = c;
-                    cPack.Options = options;
-                    country_data.push(cPack);
-                }
-            });
 
-
-        });
-    });
-}
 
 function YearArray(Years,start_year,end_year){
     var yearArr = [];
@@ -103,21 +66,10 @@ function YearArray(Years,start_year,end_year){
     return yearArr;
 }
 
-function OptionMax(option,start_year,end_year){
-
-    var max = d3.max(option,function(d) {
-        return d3.max(d.Years, function (y) {
-            return parseFloat(y);
-        });
-    });
-    return max;
-}
-
-
 function map_tooltip(country_code, start_year, end_year){
     var svgWidth = 350;
     var svgHeight = 150;
-    var xAxis = 120;
+    var xAxis = 140;
     var yAxis = 40;
 
     var ColorScale = _colorScale;
@@ -159,7 +111,7 @@ function map_tooltip(country_code, start_year, end_year){
 
     var xScale  = d3.scaleLinear()
         .range([0,svgWidth - xAxis -2])
-        .domain([0,50]);
+        .domain([0,100]);
 
 
     //Chart Elements
@@ -194,7 +146,7 @@ function map_tooltip(country_code, start_year, end_year){
         .attr("dx","-1.2em")
         .attr("dy","-.5em")
         .attr("transform","rotate(-55)")
-        .style("font-size", "8px")
+        .style("font-size", "9px")
 
     FuelTypesSVG.append("g")
         .attr("transform", "translate(" + xAxis + "," + (svgHeight - yAxis + 15) + ")")
@@ -205,7 +157,7 @@ function map_tooltip(country_code, start_year, end_year){
         .attr("dx","-1.2em")
         .attr("dy","-.5em")
         .attr("transform","rotate(-55)")
-        .style("font-size", "8px")
+        .style("font-size", "9px")
 
     //Build CHARTS
     FuelTypesSVG.selectAll("rect")
@@ -246,7 +198,7 @@ function map_tooltip(country_code, start_year, end_year){
 
         })
         .attr("fill", "black")
-        .style("font-size", "7px")
+        .style("font-size", "10px")
         .style("font-weight","700")
 
     FuelTypesSVG.append("text")
@@ -256,6 +208,7 @@ function map_tooltip(country_code, start_year, end_year){
         .style("font-size", "11px")
         .style("text-decoration", "underline")
         .style("font-weight", "bold")
+        .style("margin","5px")
         .text(OptionEnum.FuelTypes.Chart.Title);
 
 
@@ -296,7 +249,7 @@ function map_tooltip(country_code, start_year, end_year){
             }
         })
         .attr("fill", "black")
-        .style("font-size", "7px")
+        .style("font-size", "9px")
         .style("font-weight","700")
 
     CombustionFactorsSVG.append("text")
@@ -308,11 +261,20 @@ function map_tooltip(country_code, start_year, end_year){
         .style("text-decoration", "underline")
         .text(OptionEnum.CombustionFactors.Chart.Title);
 
+
+    var borderPath = svg.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("height", svgWidth)
+        .attr("width", svgHeight)
+        .style("stroke", "black")
+        .style("fill", "none")
+        .style("stroke-width", "1px");
+
+
+
 }
 
 
 
 
-$( document ).ready(function() {
-    setGlobal();
-});

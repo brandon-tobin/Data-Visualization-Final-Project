@@ -5,6 +5,7 @@ var global_world_map_self = "";
 
 var global_country_data = "";
 var _colorScale;
+var global_selected = [];
 /**
  * Constructor for the WorldChart
  */
@@ -44,7 +45,8 @@ WorldChart.prototype.init = function(){
         .attr("width",self.svgWidth)
         .attr("height",self.svgHeight)
         .attr("transform", "translate(" + self.margin.left + ",0)")
-        .style("bgcolor","green");
+        .style("bgcolor","green")
+        .style("cursor", "all-scroll")
 
 };
 
@@ -65,36 +67,73 @@ WorldChart.prototype.update = function(country_data){
         .defer(d3.tsv, "data/newWorldCountryNames.tsv")
         .await(self.drawMap);
 };
+function YearArray(Years,start_year,end_year){
+    var yearArr = [];
 
-function updateMap (year, selected_data) {
+    if(Array.isArray(Years))
+        return Years;
+
+    //Put years object into an array
+    for(var i = 0; i< years.length; i++){
+
+        //Only grab years within our bounds
+        if(years[i] >= start_year && end_year >=years[i])
+            yearArr[i] = Years[years[i]];
+    }
+
+    yearArr = yearArr.filter(function(dd){
+        return dd !== "" && dd!= ".."; });
+
+    return yearArr;
+}
+function OptionMax(option){
+    option = YearArray(option, selectedyear1, selectedyear2);
+    var max = d3.max(option,function(d) {
+        return parseFloat(d);
+    });
+    return max;
+}
+function OptionMin(option){
+    option = YearArray(option, selectedyear1, selectedyear2);
+    var min = d3.min(option,function(d) {
+        return parseFloat(d);
+    });
+    return min;
+}
+function filterOptions(_option,_options){
+    _options = YearArray(_options,selectedyear1,selectedyear2);
+    return _options.filter(function(d){
+        var r = d.Name === _option;
+        return r;
+    })
+}
+function updateMap (option) {
 
     var self = global_world_map_self;
     var world = global_world;
     var countryCodes = global_country_codes;
     var country_data = global_data;
 
+    var min = 100000000;
 
-    var mapYear = "";
+    var max = 0;
 
-    if (year === undefined || year === null || year === "") {
-        mapYear = parseInt(2013);
-    }
-    else
-    {
-        mapYear = parseInt(year);
-    }
+    country_data.forEach(function(d){
+        var _option = d.Options.filter(function(dd){
+            return dd.Name == option;
+        })
 
-    var min = d3.min(country_data, function (d) {
-        if (d.Options.length > 0) {
-            return parseInt(d.Options[selected_data].Years[mapYear]);
-        }
+        var minTemp = OptionMin(_option[0].Years);
+        var maxTemp = OptionMax(_option[0].Years);
+
+        if(minTemp < min)
+            min = minTemp;
+
+        if(maxTemp > max)
+            max = maxTemp;
+
     });
 
-    var max = d3.max(country_data, function (d) {
-        if (d.Options.length > 0) {
-            return parseInt(d.Options[selected_data].Years[mapYear]);
-        }
-    });
 
     colors = ["#ffe6e6", "#ffcccc","#ffb3b3","#ff8080", "#ff4d4d","#ff1a1a","#e60000","#b30000","#800000"];
 
@@ -107,11 +146,18 @@ function updateMap (year, selected_data) {
     var legendLinear = d3.legendColor()
         .shapeWidth(10)
         .cells(9)
+        .labelFormat(d3.format(".0f"))
         .orient('vertical')
         .scale(colorScale);
 
     self.legendSvg.select(".legendLinear")
         .call(legendLinear);
+
+    self.svg.select("#title").text(function(){
+        if(selectedyear1 == selectedyear2)
+            return selectedyear1;
+        return selectedyear1 + " - " + selectedyear2;
+    })
 
     self.svg.selectAll("path")
         .data(topojson.feature(world, world.objects.countries).features)
@@ -125,48 +171,55 @@ function updateMap (year, selected_data) {
             {
                 if (data.Options.length > 0)
                 {
-                    if (data.Options[selected_data].Years[mapYear] == "..")
+                    var _option = filterOptions(option,data.Options);
+                    var yearArr = YearArray(_option[0].Years, selectedyear1, selectedyear2);
+
+                    if (yearArr < 1)
                         return "#d9d9d9";
-                    else
-                        return colorScale(data.Options[selected_data].Years[mapYear]);
+                    else {
+                        for(var i = 0; i<yearArr.length;i++){
+                            yearArr[i] = parseFloat(yearArr[i]);
+                        }
+
+                        return colorScale(d3.sum(yearArr) / yearArr.length);
+                    }
                 }
             }
         });
 
 
-    self.svg.selectAll("rect.swatch")
-        .attr("rx", 10)
-        .attr("ry", 10)
 
 
 }
-
-WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data, year) {
+WorldChart.prototype.drawMap = function(error, world, countryCodes) {
     global_data = global_country_data;
     global_country_codes = countryCodes;
     global_world = world;
     var mapYear = "";
     var self = global_world_map_self;
 
+
+
     var countries = topojson.feature(world, world.objects.countries).features;
 
-    if (year === undefined || year === null || year === "") {
-        mapYear = parseInt(2013);
-    }
-    else{
-        mapYear = parseInt(year);
-    }
+    var min = 100000000;
 
-    var min = d3.min(global_data, function (d) {
-        if (d.Options.length > 0) {
-            return parseInt(d.Options[2].Years[mapYear]);
-        }
-    });
+    var max = 0;
+    var option = $("#controls > div > button > span.filter-option.pull-left").text();
+    country_data.forEach(function(d){
+        var _option = d.Options.filter(function(dd){
+            return dd.Name == option;
+        })
 
-    var max = d3.max(global_data, function (d) {
-        if (d.Options.length > 0) {
-            return parseInt(d.Options[2].Years[mapYear]);
-        }
+        var minTemp = OptionMin(_option[0].Years);
+        var maxTemp = OptionMax(_option[0].Years);
+
+        if(minTemp < min)
+            min = minTemp;
+
+        if(maxTemp > max)
+            max = maxTemp;
+
     });
 
     var projection = d3.geoOrthographic()
@@ -196,6 +249,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
     var legendLinear = d3.legendColor()
         .shapeWidth(10)
         .cells(9)
+        .labelFormat(d3.format(".0f"))
         .orient('vertical')
         .scale(colorScale);
 
@@ -215,17 +269,36 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
     var drag = d3.drag()
         .subject(function() { var r = projection.rotate(); return {x: r[0] / .25, y: -r[1] / .25}; })
         .on("drag", function() {
+            $(this).css( 'cursor', 'all-scroll' );
+
             var rotate = projection.rotate();
             projection.rotate([d3.event.x * .25, -d3.event.y * .25, rotate[2]]);
-
             svg.selectAll(".graticule").attr("d", path);
             svg.selectAll(".country").attr("d", path);
         });
 
+
+    self.svg.append("text")
+        .text(function(){
+            if(selectedyear1 == selectedyear2)
+                return selectedyear1;
+
+            return selectedyear1 + " - " + selectedyear2;
+        })
+        .attr("x", self.svgWidth - 90)
+        .attr("y", 50)
+        .attr("id","title")
+        .style("font-size","14px")
+        .style("font-weight","600")
+
+
     //Tooltip Div
     var div = d3.select("body").append("div")
         .attr("class", "tooltip")
-        .style("opacity", 0);
+        .style("opacity", 0)
+        .style("border-style","solid")
+        .style("border-width",".01em")
+        .style("padding","5px")
 
     var svg = self.svg;
 
@@ -249,17 +322,54 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
             {
                 if (data.Options.length > 0)
                 {
-                    if (data.Options[2].Years[2013] == "..")
+                    var _option = filterOptions(option,data.Options);
+                    var yearArr = YearArray(_option[0].Years, selectedyear1, selectedyear2);
+
+                    if (yearArr < 1)
                         return "#d9d9d9";
-                    // return "#5f6a6a";
-                    else
-                        return colorScale(data.Options[2].Years[mapYear]);
+                    else {
+                        for(var i = 0; i<yearArr.length;i++){
+                            yearArr[i] = parseFloat(yearArr[i]);
+                        }
+
+                        return colorScale(d3.sum(yearArr) / yearArr.length);
+                    }
                 }
             }
         })
         .on("click", function (d, i) {
             var country_name = findData(d, countryCodes, global_data);
-            console.log(country_name);
+            //console.log(country_name);
+
+            var Exists = false;
+            global_selected.forEach(function(d){
+                if(d.Name === country_name.Name) {
+                    Exists = true;
+                    return;
+                }
+            });
+
+            if(Exists)
+                return;
+
+
+
+
+            var cc = country_name.Info["Country code"].toLowerCase();
+
+            var html = "<li class='list-group-item'>" +country_name.Name;
+            html +="<div class='flag-icon flag-icon-"+ cc +" flag-icon-squared' style='margin-left: 10px'></div>";
+            html +="<span class='label label-danger pull-right' style='cursor: pointer' onclick='remove(this)'>x</span></li>"
+
+            $('#selected_countries').append(html)
+
+            var CountryPack = {};
+            CountryPack.Name = country_name.Name;
+            CountryPack.Data = country_name;
+            global_selected.push(CountryPack);
+
+            if(global_selected.length > 1)
+                createComparison();
         })
         .on("mouseover", function(d) {
             var country_name = findData(d, countryCodes, global_data)
@@ -271,11 +381,11 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
                 "<div id='FuelTypes'></div>"+
                 "<div id='CombustionFactors'></div>")
                 .style("left",  self.svgWidth +150+ "px")
-                .style("top", self.svgHeight-250 + "px");
+                .style("top", self.svgHeight-200 + "px");
 
             ;
             //TODO grab correct years
-            map_tooltip(country_name.CodeThree, 1999, 2001)
+            map_tooltip(country_name.Code, selectedyear1, selectedyear2)
         })
         .on("mouseout", function(d) {
             //TODO only do this when changing years scrubbed
@@ -284,7 +394,8 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
                 .duration(500)
                 .style("opacity", 0);
             div.html("");
-        });
+        })
+        .attr("style","cursor: pointer")
 
     svg.insert("path", "path.countries")
         .datum(graticule)
@@ -293,9 +404,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes, country_data
 
     svg.call(drag);
 };
-
-function findData (d, countryCodes, country_data)
-{
+function findData (d, countryCodes, country_data) {
     var country_name = "";
     for (var j = 0; j < countryCodes.length; j++)
     {
@@ -314,16 +423,29 @@ function findData (d, countryCodes, country_data)
         }
     }
 }
-
 function chooseData() {
 
     //Changed the selected data when a user selects a different
     // menu item from the drop down.
 
-    var year = document.getElementById('world_year').value;
-    var data = document.getElementById('world_data').value;
-    updateMap(year, data);
+    var data = $("#controls > div > button > span.filter-option.pull-left").text()
+    updateMap(data);
 }
+function refreshData(){
+    _WordCloud.setGlobal(false);
+    //Wait for the data to reload
+    setTimeout(function(){
+        chooseData();
+    }, 100);
+}
+function remove(elem){
+    var Country = $(elem).parent().text();
+    var element = $(elem).parent().remove();
 
+    Country = Country.substring(0,Country.length-1);
 
+    global_selected = global_selected.filter(function(d){
+        return d.Name !== Country;
+    })
+}
 

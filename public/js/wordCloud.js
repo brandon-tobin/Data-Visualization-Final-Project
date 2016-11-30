@@ -1,15 +1,8 @@
-/**
- * Constructor for the Year Chart
- *
- * @param electoralVoteChart instance of ElectoralVoteChart
- * @param worldChart instance of WorldChart
- * @param votePercentageChart instance of Vote Percentage Chart
- * @param electionInfo instance of ElectionInfo
- * @param electionWinners data corresponding to the winning parties over mutiple election years
- */
+
+var _WordCloud;
 function WordCloud(worldChart) {
     var self = this;
-
+    _WordCloud = this;
     self.worldChart = worldChart;
 
     self.init();
@@ -34,14 +27,14 @@ WordCloud.prototype.init = function(){
         .attr("width",self.svgWidth)
         .attr("height",self.svgHeight)
 
+    createYear();
 };
 
 /**
  * Creates a chart with circles representing each election year, populates text content and other required elements for the Year Chart
  */
-WordCloud.prototype.update = function(){
+WordCloud.prototype.setGlobal =function (update){
     var self = this;
-
     d3.csv("data/CountryDataByYear.csv", function (error, cData) {
         d3.csv("data/countries.csv", function (error, countries) {
 
@@ -50,39 +43,42 @@ WordCloud.prototype.update = function(){
                 _country = c;
                 var cDataFiltered = cData.filter(function(d){return d["Country Name"] ==_country.Country;});
 
-                options = [];
+                if(cDataFiltered.length != 0) {
 
-                var codeThree = "";
+                    options = [];
 
-                cDataFiltered.forEach(function(d, i){
-                    codeThree = d["Country Code"];
-                    var o ={};
-                    o.Name = d["Series Name"];
-                    // o.CodeThree = d["Country Code"];
-                    o.Years = {};
+                    cDataFiltered.forEach(function (d, i) {
+                        var o = {};
+                        o.Name = d["Series Name"];
+                        o.Years = {};
 
-                    for(var i = 1990; i<= 2016; i++){
-                        o.Years[i] = d[i + " [YR" + i + "]"];
-                    }
-                    options.push(o);
-                });
+                        for (var i = 1990; i <= 2016; i++) {
+                            o.Years[i] = d[i + " [YR" + i + "]"];
+                        }
+                        options.push(o);
+                    });
 
-                // console.log(c);
 
-                var cPack = {};
-                cPack.Name = c["Country"];
-                cPack.Code = c["Country code"];
-                cPack.CodeThree = codeThree;
-                cPack.Info = c;
-                cPack.Options = options;
-                country_data.push(cPack);
+                    var cPack = {};
+                    cPack.Name = c["Country"];
+                    cPack.Code = cDataFiltered[0]["Country Code"];
+                    cPack.Info = c;
+                    cPack.Options = options;
+                    country_data.push(cPack);
+                }
             });
-
-            // console.log(country_data);
-            self.worldChart.update(country_data);
-
+            if(update)
+                self.worldChart.update(country_data);
         });
     });
+
+}
+
+WordCloud.prototype.update = function(){
+    var self = this;
+
+    this.setGlobal(true);
+
 
 
     //Domain definition for global color scale

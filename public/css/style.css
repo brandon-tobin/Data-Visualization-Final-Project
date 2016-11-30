@@ -211,6 +211,7 @@ h3{
     stroke: grey;
     stroke-width: 1px;
     opacity: .2;
+    pointer-events: none;
 }
 
 .container {

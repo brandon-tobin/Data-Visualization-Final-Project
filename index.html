@@ -5,11 +5,16 @@
     <meta charset="UTF-8">
     <title>Visualization - Final Project</title>
     <link rel="stylesheet" href="public/css/style.css"/>
+    <link rel="stylesheet" href="public/css/flag-icon.min.css"/>
+    <link rel="stylesheet" href="public/css/bootstrap-select.min.css"/>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="http://d3js.org/queue.v1.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v1.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.9.0/d3-legend.js"></script>
     <script type="text/javascript" src="public/js/jquery.min.js"></script>
+    <script type="text/javascript" src="public/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="public/js/YearBrushing.js"></script>
+    <script type="text/javascript" src="public/js/comparison_view.js"></script>
     <script type="text/javascript" src="public/js/tooltip.js"></script>
     <script type="text/javascript" src="bower_components/d3/d3.js"></script>
     <script type="text/javascript" src="bower_components/d3-tip/index.js"></script>
@@ -24,6 +29,18 @@
     <!-- Bootstrap Core CSS -->
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
+    <script type="application/javascript">
+        //TODO make the selection bar larger
+        $(document).ready(function(){
+            $('.selectpicker').selectpicker({
+                style: 'btn-info',
+                size: 50
+            });
+
+        })
+    </script>
+
 </head>
 
 <body>
@@ -31,7 +48,7 @@
 
 <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
+    <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
 
         <div class="navbar-header">
@@ -50,38 +67,45 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Matt Howa <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>UID: U0805396</li>
+                        <li style="margin: 5px" class="text-center">U0805396</li>
                         <li role="separator" class="divider"></li>
-                        <li>Email: matt.j.howa@gmail.com</li>
+                        <li style="margin: 10px">matt.j.howa@gmail.com</li>
                     </ul>
                 </li>
 
                 <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Brandon Tobin <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>UID: U0820304</li>
+                        <li style="margin: 5px" class="text-center">U0820304</li>
                         <li role="separator" class="divider"></li>
-                        <li>Email: brandontobin@cox.net</li>
+                        <li style="margin: 5px">brandontobin@cox.net</li>
                     </ul>
                 </li>
 
                 <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Matt Wilden <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li>UID: U0920335</li>
+                        <li style="margin: 5px" class="text-center">U0920335</li>
                         <li role="separator" class="divider"></li>
-                        <li>Email: willdenms@gmail.com</li>
+                        <li style="margin: 5px">willdenms@gmail.com</li>
                     </ul>
                 </li>
-                <li>
-                    <a href="https://github.com/willdenms/dataviscourse-pr-climate_change_players.git">Github</a>
-                </li>
+
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a class="pull-right" href="https://github.com/willdenms/dataviscourse-pr-climate_change_players.git">Github</a></li>
+            </ul>
+
         </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
 </nav>
+
+<div style="height:50px"></div>
+
+
+
 
 <div id="year-chart" class="view">
 </div>
@@ -143,64 +167,59 @@
 </script>
 
 <div id = "worldChart" class = "view">
-    <h1>CO2 Emissions (kt)</h1>
-    <div id = "controls" class="view">
-        <select id="world_year" onchange="chooseData()">
-            <option value="1990">1990</option>
-            <option value="1991">1991</option>
-            <option value="1992">1992</option>
-            <option value="1993">1993</option>
-            <option value="1994">1994</option>
-            <option value="1995">1995</option>
-            <option value="1996">1996</option>
-            <option value="1997">1997</option>
-            <option value="1998">1998</option>
-            <option value="1999">1999</option>
-            <option value="2000">2000</option>
-            <option value="2001">2001</option>
-            <option value="2002">2002</option>
-            <option value="2003">2003</option>
-            <option value="2004">2004</option>
-            <option value="2005">2005</option>
-            <option value="2006">2006</option>
-            <option value="2007">2007</option>
-            <option value="2008">2008</option>
-            <option value="2009">2009</option>
-            <option value="2010">2010</option>
-            <option value="2011">2011</option>
-            <option value="2012">2012</option>
-            <option selected value="2013">2013</option>
-            <option value="2014">2014</option>
-            <option value="2015">2015</option>
-        </select>
-        <select id="world_data" onchange="chooseData()">
-            <option value="0">Population, total</option>
-            <option value="1">CO2 emissions (kg per PPP $ of GDP)</option>
-            <option selected value="2">CO2 emissions (kt)</option>
-            <option value="3">CO2 emissions (metric tons per capita)</option>
-            <option value="4">CO2 emissions from electricity and heat production, total (% of total fuel combustion)</option>
-            <option value="5">CO2 emissions from gaseous fuel consumption (% of total)</option>
-            <option value="6">CO2 emissions from liquid fuel consumption (% of total)</option>
-            <option value="7">CO2 emissions from manufacturing industries and construction (% of total fuel combustion)</option>
-            <option value="8">CO2 emissions from other sectors, excluding residential buildings and commercial and public services (% of total fuel combustion)</option>
-            <option value="9">CO2 emissions from residential buildings and commercial and public services (% of total fuel combustion)</option>
-            <option value="10">CO2 emissions from solid fuel consumption (% of total)</option>
-            <option value="11">Surface area (sq. km)</option>
-            <option value="12">GDP (current US$)</option>
-            <option value="13">GDP growth (annual %)</option>
-            <option value="14">GDP per capita (current US$)</option>
+    <div id = "controls" class="view" style="margin-left: 50px; width: 850px">
+        <select id="world_data" class="selectpicker" onchange="refreshData()" style="width: 850px">
+            <optgroup label="CO2 emissions">
+                <option value="1">CO2 emissions (kg per PPP $ of GDP)</option>
+                <option selected value="2">CO2 emissions (kt)</option>
+                <option value="3">CO2 emissions (metric tons per capita)</option>
+            </optgroup>
+            <optgroup label="Fuel Type">
+                <option value="5">CO2 emissions from gaseous fuel consumption (% of total)</option>
+                <option value="6">CO2 emissions from liquid fuel consumption (% of total)</option>
+                <option value="10">CO2 emissions from solid fuel consumption (% of total)</option>
+            </optgroup>
+            <optgroup label="Combustion Factors">
+                <option value="4">CO2 emissions from electricity and heat production, total (% of total fuel combustion)</option>
+                <option value="7">CO2 emissions from manufacturing industries and construction (% of total fuel combustion)</option>
+                <option value="8">CO2 emissions from other sectors, excluding residential buildings and commercial and public services (% of total fuel combustion)</option>
+                <option value="9">CO2 emissions from residential buildings and commercial and public services (% of total fuel combustion)</option>
+            </optgroup>
+            <optgroup label="GDP Factors">
+                <option value="12">GDP (current US$)</option>
+                <option value="13">GDP growth (annual %)</option>
+                <option value="14">GDP per capita (current US$)</option>
+            </optgroup>
+
+            <optgroup label="Country Factors">
+                <option value="Population, total">Population, total</option>
+                <option value="11">Surface area (sq. km)</option>
+            </optgroup>
         </select>
     </div>
+    <div id="years"></div>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-1 col-md-offset-0">
+            <div class="col-xs-1 col-md-offset-0">
                 <div id="legend" class = "view"></div>
             </div>
-            <div class="col-md-11">
-                <div id = "world" class = "view"></div>
+            <div class="col-xs-8" >
+                <div id = "world" class = "view" ></div>
+            </div>
+            <div class="col-xs-3">
+                <div><h3>Selected Countries</h3></div>
+                <ul class="list-group" id="selected_countries">
+                    <li class='list-group-item'>Select at least two Countries to compare</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="comparison" class = "view"></div>
             </div>
         </div>
     </div>
+</div>
 <script type="application/javascript" src="public/js/worldChart.js"></script>
 <script type="application/javascript" src="public/js/wordCloud.js"></script>
 <script type="application/javascript" src="public/js/main.js"></script>

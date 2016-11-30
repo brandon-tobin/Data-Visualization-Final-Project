@@ -1,6 +1,7 @@
 /*
  * Root file that handles instances of all the charts and loads the visualization
  */
+
 (function(){
     var instance = null;
 
@@ -11,7 +12,7 @@
     function init() {
         //Creating instances for each visualization
         // var votePercentageChart = new VotePercentageChart();
-
+        var self = this;
         var worldChart = new WorldChart();
 
         var wordCloud = new WordCloud(worldChart);
