@@ -81,9 +81,6 @@
         <!-- Brand and toggle get grouped for better mobile display -->
 
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">
-                <img alt="UofU" src="uLogo.gif" height="25" width="25">
-            </a>
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
@@ -154,9 +151,10 @@
 </div>
 <!--I tried to integrate the word cloud here but it wasn't working-->
 <div id= "wordCloud" class = "view">
-
+    <iframe class="wordCloud" id="wordCloudFrame" src="Word%20Cloud/cloud.html" height="230" width="960" frameBorder="0" scrolling="no"></iframe>
 
 </div>
+
 
 <div id = "worldChart" class = "view">
     <div id = "controls" class="view" style="margin-left: 50px; width: 850px">
@@ -167,7 +165,6 @@
                 <option selected value="2">CO2 emissions (kt)</option>
                 <option value="3">CO2 emissions (metric tons per capita)</option>
             </optgroup>
-
             <optgroup label="Fuel Type">
                 <option value="5">CO2 emissions from gaseous fuel consumption (% of total)</option>
                 <option value="6">CO2 emissions from liquid fuel consumption (% of total)</option>
@@ -272,7 +269,6 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
 
 </body>
 </html>
