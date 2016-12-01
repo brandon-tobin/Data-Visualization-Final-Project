@@ -162,7 +162,7 @@ function updateMap (option) {
         .orient('vertical')
         .scale(colorScale);
 
-    self.legendSvg.select(".legendLinear")
+    self.legendSvg.select(".legendLinear-visBootStrap")
         .call(legendLinear);
 
 
@@ -226,7 +226,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
     var min = 100000000;
 
     var max = 0;
-    var option = $("#controls > div > button > span.filter-option.pull-left").text();
+    var option = $("#controls > div > button > span.filter-option-visBoot.pull-left").text();
     country_data.forEach(function(d){
         var _option = d.Options.filter(function(dd){
             return dd.Name == option;
@@ -264,7 +264,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
 
     // Setup Legend
     self.legendSvg.append("g")
-        .attr("class", "legendLinear")
+        .attr("class", "legendLinear-visBootStrap")
         .attr("transform", "translate(0, 350)");
 
     var legendLinear = d3.legendColor()
@@ -281,7 +281,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
     //     .orient('horizontal')
     //     .scale(colorScale);
 
-    self.legendSvg.select(".legendLinear")
+    self.legendSvg.select(".legendLinear-visBootStrap")
         .call(legendLinear);
 
 
@@ -378,7 +378,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
 
             var cc = country_name.Info["Country code"].toLowerCase();
 
-            var html = "<li class='list-group-item'>" +country_name.Name;
+            var html = "<li class='list-group-item-visBootStrap'>" + country_name.Name;
             html +="<div class='flag-icon flag-icon-"+ cc +" flag-icon-squared' style='margin-left: 10px'></div>";
             html +="<span class='label label-danger pull-right' style='cursor: pointer' onclick='remove(this)'>x</span></li>"
 
@@ -502,7 +502,7 @@ function chooseData() {
     //Changed the selected data when a user selects a different
     // menu item from the drop down.
 
-    var data = $("#controls > div > button > span.filter-option.pull-left").text()
+    var data = $("#controls > div > button > span.filter-option-visBoot.pull-left").text()
     updateMap(data);
 }
 function refreshData(){

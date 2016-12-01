@@ -1,21 +1,21 @@
 //Simple animated example of d3-cloud - https://github.com/jasondavies/d3-cloud
 //Based on https://github.com/jasondavies/d3-cloud/blob/master/examples/simple.html
 
-// Encapsulate the word cloud functionality
+
 function wordCloud(selector) {
 
     var color = d3.scale.linear()
-        .domain([0,1,2,3,4,5,6,10,15,20,100])
-        .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
+        .domain([100, 90, 80, 70, 60, 50, 40, 30, 20, 10])
+        .range(["#ffe6e6", "#ffcccc", "#ffb3b3", "#ff8080", "#ff4d4d", "#ff1a1a", "#e60000", "#b30000", "#800000"]);
 
     var fill = d3.scale.category20();
 
     //Construct the word cloud's SVG element
     var svg = d3.select(selector).append("svg")
-        .attr("width", 960)
-        .attr("height", 230)
+        .attr("width", 1180)
+        .attr("height", 980)
         .append("g")
-        .attr("transform", "translate(455,100)");
+        .attr("transform", "translate(600,470)");
 
 
     //Draw the word cloud
@@ -45,7 +45,7 @@ function wordCloud(selector) {
         //Exiting words
         cloud.exit()
             .transition()
-            .duration(1200)
+            .duration(2000)
             .style('fill-opacity', 1e-6)
             .attr('font-size', 1)
             .remove();
@@ -61,11 +61,11 @@ function wordCloud(selector) {
         //The outside world will need to call this function, so make it part
         // of the wordCloud return value.
         update: function(words) {
-            d3.layout.cloud().size([950, 210])
+            d3.layout.cloud().size([1180, 980])
                 .words(words)
-                .padding(2)
+                .padding(1)
                 .rotate(function() { return ~~(Math.random() * 2) * 90; })
-                .font("Impact")
+                .font("Helvetica Neue")
                 .fontSize(function(d) { return d.size; })
                 .on("end", draw)
                 .start();
@@ -105,7 +105,7 @@ function init(myWords) {
         vis.update(getWords(i++ % _words.length))
         setTimeout(function () {
             showNewWords(vis, i + 1)
-        }, 2000)
+        }, 10000)
     }
 
 //Create a new instance of the word cloud visualisation.

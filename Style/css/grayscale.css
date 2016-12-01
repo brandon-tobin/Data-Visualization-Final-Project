@@ -39,7 +39,7 @@ p {
   }
 }
 a {
-  color: #42DCA3;
+  color: #800000;
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
@@ -47,7 +47,7 @@ a {
 a:hover,
 a:focus {
   text-decoration: none;
-  color: #1d9b6c;
+  color: #b30000;
 }
 .light {
   font-weight: 400;
@@ -110,6 +110,7 @@ a:focus {
     -webkit-transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;
     -moz-transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;
     transition: background 0.5s ease-in-out, padding 0.5s ease-in-out;
+
   }
   .navbar-custom.top-nav-collapse {
     padding: 0;
@@ -124,7 +125,7 @@ a:focus {
   padding: 100px 0;
   text-align: center;
   color: white;
-  background: url(../img/climate-change.jpg) no-repeat bottom center scroll;
+  background: url(../img/global-warming.jpg) no-repeat bottom center scroll;
   background-color: black;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -225,10 +226,40 @@ a:focus {
   display: table;
   width: 100%;
   height: 100%;
+  padding: 30px 0;
+  text-align: center;
+  color: black;
+  background-color: white;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+
+}
+
+.content-section3 {
+  display: table;
+  width: 100%;
+  height: 100%;
   padding: 100px 0;
   text-align: center;
   color: white;
-  background-color: white;
+  background-color: black;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  -o-background-size: cover;
+
+}
+
+.content-section3 {
+  display: table;
+  width: 100%;
+  height: 100%;
+  padding: 100px 0;
+  text-align: center;
+  color: white;
+  background-color: black;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
@@ -275,16 +306,16 @@ a:focus {
   border-radius: 0;
 }
 .btn-default {
-  border: 1px solid #42DCA3;
-  color: #42DCA3;
+  border: 1px solid #800000;
+  color: #800000;
   background-color: transparent;
 }
 .btn-default:hover,
 .btn-default:focus {
-  border: 1px solid #42DCA3;
+  border: 1px solid #800000;
   outline: none;
   color: black;
-  background-color: #42DCA3;
+  background-color: #800000;
 }
 ul.banner-social-buttons {
   margin-top: 0;
