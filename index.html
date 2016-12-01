@@ -2,32 +2,52 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Climate Change Players, a visualization of the world,
+                and the countries whose output contribute to world emissions">
+    <meta name="author" content="">
     <title>Visualization - Final Project</title>
-    <link rel="stylesheet" href="public/css/style.css"/>
-    <link rel="stylesheet" href="public/css/flag-icon.min.css"/>
-    <link rel="stylesheet" href="public/css/bootstrap-select.min.css"/>
-    <script src="public/js/d3.v4.min.js"></script>
-    <script src="public/js/queue.v1.min.js"></script>
-    <script src="public/js/d3-geo-projection.v1.min.js"></script>
-    <script type="text/javascript" src="public/js/jquery.min.js"></script>
-    <script type="text/javascript" src="public/js/bootstrap-select.min.js"></script>
-    <script type="text/javascript" src="public/js/YearBrushing.js"></script>
-    <script type="text/javascript" src="public/js/comparison_view.js"></script>
-    <script type="text/javascript" src="public/js/tooltip.js"></script>
-    <script type="text/javascript" src="bower_components/d3/d3.js"></script>
-    <script type="text/javascript" src="bower_components/d3-tip/index.js"></script>
-    <script type="text/javascript" src="public/js/d3-legend.js"></script>
-    <script type="text/javascript" src="public/js/topojson.min.js"></script>
-    <link href="public/css/fonts.css" rel="stylesheet">
-    <link href="public/css/fonts2.css" rel="stylesheet">
-    <!--This is stuff for the wordCloud, it lets the word cloud work, but kills the map...-->
-    <!--<script src="http://d3js.org/d3.v3.min.js"></script>-->
-    <!--<script src="public/d3.layout.cloud.js"></script>-->
+
+    <!-- Scripts -->
+    <script src="js/d3.v4.min.js"></script>
+    <script src="js/queue.v1.min.js"></script>
+    <script src="js/d3-geo-projection.v1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="js/YearBrushing.js"></script>
+    <script type="text/javascript" src="js/comparison_view.js"></script>
+    <script type="text/javascript" src="js/tooltip.js"></script>
+    <script type="text/javascript" src="js/d3/d3.js"></script>
+    <script type="text/javascript" src="js/d3-tip/index.js"></script>
+    <script type="text/javascript" src="js/d3-legend.js"></script>
+    <script type="text/javascript" src="js/topojson.min.js"></script>
+
+    <!-- Scripts for main boot strap -->
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <!-- End scripts -->
+
+    <!-- Style -->
+    <link rel="stylesheet" href="Style/css/style.css" type="text/css"/>
+    <link rel="stylesheet" href="Style/css/flag-icon.min.css" type="text/css"/>
+    <link rel="stylesheet" href="Style/css/bootstrap-select.min.css" type="text/css"/>
+
+    <link href="Style/css/fonts.css" rel="stylesheet" type="text/css">
+    <link href="Style/css/fonts2.css" rel="stylesheet" type="text/css">
+
+    <!-- Main Bootstrap theme -->
+    <link href="Style/css/grayscale.css" rel="stylesheet" type="text/css">
+    <link href="Style/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 
     <!-- Bootstrap Core CSS -->
-    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="Style/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 
+    <!-- End Style -->
 
     <script type="application/javascript">
         //TODO make the selection bar larger
@@ -71,7 +91,7 @@
 
 </head>
 
-<body>
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 
 
 <!-- Navigation -->
@@ -254,9 +274,9 @@
         </div>
     </div>
 </div>
-<script type="application/javascript" src="public/js/worldChart.js"></script>
-<script type="application/javascript" src="public/js/wordCloud.js"></script>
-<script type="application/javascript" src="public/js/main.js"></script>
+<script type="application/javascript" src="js/worldChart.js"></script>
+<script type="application/javascript" src="js/wordCloud.js"></script>
+<script type="application/javascript" src="js/main.js"></script>
 
 
 
@@ -267,7 +287,7 @@
 <!--</p>-->
 
 <!-- Bootstrap Core JavaScript -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="Style/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 </body>
 </html>
