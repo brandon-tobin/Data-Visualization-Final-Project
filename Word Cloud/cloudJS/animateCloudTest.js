@@ -7,6 +7,8 @@ function wordCloud(selector) {
     var color = d3.scale.linear()
         .domain([100, 90, 80, 70, 60, 50, 40, 30, 20, 10])
         .range(["#ffe6e6", "#ffcccc", "#ffb3b3", "#ff8080", "#ff4d4d", "#ff1a1a", "#e60000", "#b30000", "#800000"]);
+    // Gray theme
+    //.range(["#484848", "#505050", "#585858", "#606060", "#686868", "#707070", "#787878", "#808080", "#888888"]);
 
     var fill = d3.scale.category20();
 
