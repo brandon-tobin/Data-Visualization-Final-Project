@@ -41,6 +41,35 @@
         })
     </script>
 
+    <style>
+        .foreground  path {
+            fill: none;
+
+            stroke-width: 3px;
+        }
+        .fade{
+            /*stroke-opacity: 0.05;*/
+            /*stroke: #000;*/
+            /*stroke-width: 3px;*/
+        }
+        .axis line, .axis path {
+            fill: none;
+            stroke: #000;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            text-shadow: 0 1px 0 #fff;
+            cursor: move;
+        }
+        .brush .extent {
+            fill-opacity: .3;
+            stroke: #fff;
+            shape-rendering: crispEdges;
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -52,6 +81,9 @@
         <!-- Brand and toggle get grouped for better mobile display -->
 
         <div class="navbar-header">
+            <a class="navbar-brand" href="#">
+                <img alt="UofU" src="uLogo.gif" height="25" width="25">
+            </a>
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
@@ -93,7 +125,7 @@
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a class="pull-right" href="https://github.com/willdenms/dataviscourse-pr-climate_change_players.git">Github</a></li>
+                <li><a class="pull-right" href="https://github.com/willdenms/dataviscourse-pr-climate_change_players.git"><img src="github.png" alt="GitHub" height="25" width="25"></a></li>
             </ul>
 
         </div>
@@ -125,55 +157,17 @@
 
 
 </div>
-<script>
-
-    d3.csv("public/words.csv", function(rows) {
-
-        console.log("rows: ", rows);
-
-        var color = d3.scale.linear()
-                .domain([0,1,2,3,4,5,6,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,100])
-                .range(["#ddd", "#ccc", "#bbb", "#aaa", "#999", "#888", "#777", "#666", "#555", "#444", "#333", "#222"]);
-
-        d3.layout.cloud().size([800, 350])
-                .words(rows)
-                .rotate(0)
-                .fontSize(function(d) { return d.size; })
-                .on("end", draw)
-                .start();
-
-        function draw(words) {
-            d3.select("#wordCloud").append("svg")
-                    .attr("width", 800)
-                    .attr("height", 350)
-                    .attr("class", "wordcloud")
-                    .append("g")
-                    // without the transform, words words would get cutoff to the left and top, they would
-                    // appear outside of the SVG area
-                    .attr("transform", "translate(320,200)")
-                    .selectAll("text")
-                    .data(words)
-                    .enter().append("text")
-                    .style("font-size", function(d) { return d.size + "px"; })
-                    .style("fill", function(d, i) { return color(i); })
-                    .attr("transform", function(d) {
-                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
-                    })
-                    .text(function(d) { return d.text; });
-        }
-
-    });
-
-</script>
 
 <div id = "worldChart" class = "view">
     <div id = "controls" class="view" style="margin-left: 50px; width: 850px">
-        <select id="world_data" class="selectpicker" onchange="refreshData()" style="width: 850px">
+        <select id="world_data"  data-style="btn-danger" data-live-search="true" class="selectpicker form-control" onchange="refreshData()"   data-header="Pick a data set to display">
+            <option data-divider="true"></option>
             <optgroup label="CO2 emissions">
                 <option value="1">CO2 emissions (kg per PPP $ of GDP)</option>
                 <option selected value="2">CO2 emissions (kt)</option>
                 <option value="3">CO2 emissions (metric tons per capita)</option>
             </optgroup>
+
             <optgroup label="Fuel Type">
                 <option value="5">CO2 emissions from gaseous fuel consumption (% of total)</option>
                 <option value="6">CO2 emissions from liquid fuel consumption (% of total)</option>
@@ -199,6 +193,16 @@
     </div>
     <div id="years"></div>
     <div class="container-fluid">
+        <row>
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-2">
+                        <button class="glyphicon glyphicon-play btn" id="play" style="margin: 2px"></button>
+                        <button class="glyphicon glyphicon-pause btn" id="pause" style="margin: 2px"></button>
+                    </div>
+                </div>
+            </div>
+        </row>
         <div class="row">
             <div class="col-xs-1 col-md-offset-0">
                 <div id="legend" class = "view"></div>
@@ -213,7 +217,41 @@
                 </ul>
             </div>
         </div>
+        <div class="row" style="height: 50px"></div>
+        <hr/>
+        <div class="row" style="height: 50px"></div>
         <div class="row">
+            <div class="col-xs-6 ">
+                <select class="selectpicker form-control" id="c_select"  data-style="btn-danger" data-actions-box="true" onchange="createComparison()" multiple>
+                    <optgroup label="CO2 emissions">
+                        <option value="1" selected>CO2 emissions (kg per PPP $ of GDP)</option>
+                        <option value="2" selected>CO2 emissions (kt)</option>
+                        <option value="3" selected>CO2 emissions (metric tons per capita)</option>
+                    </optgroup>
+
+                    <optgroup label="Fuel Type">
+                        <option value="5" selected>CO2 emissions from gaseous fuel consumption (% of total)</option>
+                        <option value="6" selected>CO2 emissions from liquid fuel consumption (% of total)</option>
+                        <option value="10" selected>CO2 emissions from solid fuel consumption (% of total)</option>
+                    </optgroup>
+                    <optgroup label="Combustion Factors">
+                        <option value="4" selected>CO2 emissions from electricity and heat production, total (% of total fuel combustion)</option>
+                        <option value="7" selected>CO2 emissions from manufacturing industries and construction (% of total fuel combustion)</option>
+                        <option value="8" selected>CO2 emissions from other sectors, excluding residential buildings and commercial and public services (% of total fuel combustion)</option>
+                        <option value="9" selected>CO2 emissions from residential buildings and commercial and public services (% of total fuel combustion)</option>
+                    </optgroup>
+                    <optgroup label="GDP Factors">
+                        <option value="12" selected>GDP (current US$)</option>
+                        <option value="13" selected>GDP growth (annual %)</option>
+                        <option value="14" selected>GDP per capita (current US$)</option>
+                    </optgroup>
+
+                    <optgroup label="Country Factors">
+                        <option value="15" selected>Population, total</option>
+                        <option value="16" selected>Surface area (sq. km)</option>
+                    </optgroup>
+                </select>
+            </div>
             <div class="col-xs-12">
                 <div id="comparison" class = "view"></div>
             </div>
@@ -234,6 +272,7 @@
 
 <!-- Bootstrap Core JavaScript -->
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
 
 </body>
 </html>

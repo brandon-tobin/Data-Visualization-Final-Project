@@ -167,7 +167,11 @@ function map_tooltip(country_code, start_year, end_year){
         .attr("transform", "translate(" + 0 + "," + (15) + ")")
         .attr("height",function(){return (svgHeight-yAxis-5)/FuelTypeOptions.length;})
         .attr("width",function(d){
-            return xScale(d3.sum(d.Years)/ d.Years.length);})
+            var w = xScale(d3.sum(d.Years)/ d.Years.length);
+            if(isNaN(w) || w<0)
+                return 0;
+            return w;
+        })
         .attr("x",xAxis)
         .attr("y",function(d,i){return (svgHeight-yAxis-5)/FuelTypeOptions.length*i;})
         .attr("class",function(d,i){
@@ -219,7 +223,12 @@ function map_tooltip(country_code, start_year, end_year){
         .append("rect")
         .attr("transform", "translate(" + 0 + "," + (15) + ")")
         .attr("height",function(){return (svgHeight-yAxis-5)/CombustionFactorOptions.length;})
-        .attr("width",function(d){return xScale(d3.sum(d.Years)/ d.Years.length);})
+        .attr("width",function(d){
+            var w = xScale(d3.sum(d.Years)/ d.Years.length);
+            if(isNaN(w) || w<0)
+                return 0;
+            return w;
+        })
         .attr("x",xAxis)
         .attr("y",function(d,i){return (svgHeight-yAxis-5)/CombustionFactorOptions.length*i;})
         .attr("class",function(d,i){
@@ -261,15 +270,15 @@ function map_tooltip(country_code, start_year, end_year){
         .style("text-decoration", "underline")
         .text(OptionEnum.CombustionFactors.Chart.Title);
 
-
-    var borderPath = svg.append("rect")
-        .attr("x", 0)
-        .attr("y", 0)
-        .attr("height", svgWidth)
-        .attr("width", svgHeight)
-        .style("stroke", "black")
-        .style("fill", "none")
-        .style("stroke-width", "1px");
+    //
+    //var borderPath = svg.append("rect")
+    //    .attr("x", 0)
+    //    .attr("y", 0)
+    //    .attr("height", svgWidth)
+    //    .attr("width", svgHeight)
+    //    .style("stroke", "black")
+    //    .style("fill", "none")
+    //    .style("stroke-width", "1px");
 
 
 

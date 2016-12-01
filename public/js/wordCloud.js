@@ -1,5 +1,6 @@
 
 var _WordCloud;
+var country_data;
 function WordCloud(worldChart) {
     var self = this;
     _WordCloud = this;
@@ -38,14 +39,16 @@ WordCloud.prototype.setGlobal =function (update){
     d3.csv("data/CountryDataByYear.csv", function (error, cData) {
         d3.csv("data/countries.csv", function (error, countries) {
 
+            //TODO add population/surfaceArea Option
+
             country_data = [];
             countries.forEach(function(c,i){
-                _country = c;
+                var _country = c;
                 var cDataFiltered = cData.filter(function(d){return d["Country Name"] ==_country.Country;});
 
                 if(cDataFiltered.length != 0) {
 
-                    options = [];
+                    var options = [];
 
                     cDataFiltered.forEach(function (d, i) {
                         var o = {};

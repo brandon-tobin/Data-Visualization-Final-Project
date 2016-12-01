@@ -6,6 +6,12 @@ var global_world_map_self = "";
 var global_country_data = "";
 var _colorScale;
 var global_selected = [];
+var global_rotation = [];
+var rotation_play = false;
+
+var rotate = [10, -10],
+    velocity = [.01, 0],
+    time = Date.now();
 /**
  * Constructor for the WorldChart
  */
@@ -143,21 +149,23 @@ function updateMap (option) {
         .domain([min, buckets - 1, max])
         .range(colors);
 
+    self.svg.select("#title").text(function(){
+        if(selectedyear1 == selectedyear2)
+            return selectedyear1;
+        return selectedyear1 + " - " + selectedyear2;
+    })
+
     var legendLinear = d3.legendColor()
-        .shapeWidth(10)
+        .shapeWidth(20)
         .cells(9)
-        .labelFormat(d3.format(".0f"))
+        .labelFormat(d3.format(".0s"))
         .orient('vertical')
         .scale(colorScale);
 
     self.legendSvg.select(".legendLinear")
         .call(legendLinear);
 
-    self.svg.select("#title").text(function(){
-        if(selectedyear1 == selectedyear2)
-            return selectedyear1;
-        return selectedyear1 + " - " + selectedyear2;
-    })
+
 
     self.svg.selectAll("path")
         .data(topojson.feature(world, world.objects.countries).features)
@@ -198,6 +206,19 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
     var mapYear = "";
     var self = global_world_map_self;
 
+    self.svg.append("text")
+        .text(function(){
+            if(selectedyear1 == selectedyear2)
+                return selectedyear1;
+
+            return selectedyear1 + " - " + selectedyear2;
+        })
+        .attr("x", self.svgWidth - 90)
+        .attr("y", 50)
+        .attr("id","title")
+        .style("font-size","14px")
+        .style("font-weight","600")
+        .attr("z-index", 1000)
 
 
     var countries = topojson.feature(world, world.objects.countries).features;
@@ -222,7 +243,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
 
     });
 
-    var projection = d3.geoOrthographic()
+    projection = d3.geoOrthographic()
         .scale(245)
         .rotate([0, 0])
         .translate([self.svgWidth / 2, self.svgHeight / 2])
@@ -247,11 +268,12 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
         .attr("transform", "translate(0, 350)");
 
     var legendLinear = d3.legendColor()
-        .shapeWidth(10)
+        .shapeWidth(20)
         .cells(9)
-        .labelFormat(d3.format(".0f"))
+        .labelFormat(d3.format(".0s"))
         .orient('vertical')
-        .scale(colorScale);
+        .scale(colorScale)
+
 
     // var legendLinear = d3.legendColor()
     //     .shapeWidth(self.svgWidth/9 - 2)
@@ -266,30 +288,32 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
 
     var graticule = d3.geoGraticule();
 
+
     var drag = d3.drag()
         .subject(function() { var r = projection.rotate(); return {x: r[0] / .25, y: -r[1] / .25}; })
         .on("drag", function() {
+            clearIntervals();
+
             $(this).css( 'cursor', 'all-scroll' );
 
             var rotate = projection.rotate();
             projection.rotate([d3.event.x * .25, -d3.event.y * .25, rotate[2]]);
             svg.selectAll(".graticule").attr("d", path);
             svg.selectAll(".country").attr("d", path);
-        });
-
-
-    self.svg.append("text")
-        .text(function(){
-            if(selectedyear1 == selectedyear2)
-                return selectedyear1;
-
-            return selectedyear1 + " - " + selectedyear2;
         })
-        .attr("x", self.svgWidth - 90)
-        .attr("y", 50)
-        .attr("id","title")
-        .style("font-size","14px")
-        .style("font-weight","600")
+        .on("end", function(){
+            if(!rotation_play)
+                return;
+            time = Date.now();
+            rotate = projection.rotate();
+            clearIntervals()
+            global_rotation.push(setInterval(function(){
+                var dt = Date.now() - time;
+                projection.rotate([rotate[0] + velocity[0] * dt, rotate[1] + velocity[1] * dt]);
+                svg.selectAll(".graticule").attr("d", path);
+                svg.selectAll(".country").attr("d", path);
+            }, 10));
+        })
 
 
     //Tooltip Div
@@ -352,9 +376,6 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
             if(Exists)
                 return;
 
-
-
-
             var cc = country_name.Info["Country code"].toLowerCase();
 
             var html = "<li class='list-group-item'>" +country_name.Name;
@@ -368,11 +389,17 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
             CountryPack.Data = country_name;
             global_selected.push(CountryPack);
 
-            if(global_selected.length > 1)
+            if(global_selected.length > 1) {
                 createComparison();
+                $("#c_select").selectpicker('show')
+            }
+
         })
         .on("mouseover", function(d) {
             var country_name = findData(d, countryCodes, global_data)
+
+            if(country_name == undefined)
+                return;
 
             div.transition()
                 .duration(200)
@@ -380,7 +407,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
             div	.html("<center><h3>"+country_name.Name+"</h3></center>" +
                 "<div id='FuelTypes'></div>"+
                 "<div id='CombustionFactors'></div>")
-                .style("left",  self.svgWidth +150+ "px")
+                .style("left",  self.svgWidth +165+ "px")
                 .style("top", self.svgHeight-200 + "px");
 
             ;
@@ -403,7 +430,54 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
         .attr("d", path);
 
     svg.call(drag);
+
+
+    var zoom = d3.zoom()
+        .scaleExtent([1, 10])
+        .on("zoom", function(){
+            clearIntervals();
+            svg.selectAll(".graticule").attr("transform", d3.event.transform)
+            svg.selectAll(".country").attr("transform", d3.event.transform)
+
+            if(!rotation_play)
+                return;
+            global_rotation.push(setInterval(function(){
+                var dt = Date.now() - time;
+                projection.rotate([rotate[0] + velocity[0] * dt, rotate[1] + velocity[1] * dt]);
+                svg.selectAll(".graticule").attr("d", path);
+                svg.selectAll(".country").attr("d", path);
+            }, 10));
+        });
+
+    svg.call(zoom)
+
+    $("#play").on("click",function(d){
+        time = Date.now();
+        rotate = projection.rotate();
+        clearIntervals();
+        global_rotation.push(setInterval(function(){
+            var dt = Date.now() - time;
+            projection.rotate([rotate[0] + velocity[0] * dt, rotate[1] + velocity[1] * dt]);
+            svg.selectAll(".graticule").attr("d", path);
+            svg.selectAll(".country").attr("d", path);
+        }, 10));
+
+        rotation_play = true;
+    })
+    $("#pause").on("click",function(d){
+        clearIntervals();
+        rotation_play = false;
+    })
+
 };
+
+function clearIntervals(){
+    for(var i = 0; i< global_rotation.length; i++){
+        clearInterval(global_rotation[i]);
+    }
+}
+
+
 function findData (d, countryCodes, country_data) {
     var country_name = "";
     for (var j = 0; j < countryCodes.length; j++)
@@ -447,5 +521,12 @@ function remove(elem){
     global_selected = global_selected.filter(function(d){
         return d.Name !== Country;
     })
+
+
+    $("#comparison").html("");
+    if(global_selected.length >1)
+        createComparison();
+    else
+        $(".#c_select").selectpicker('hide')
 }
 
