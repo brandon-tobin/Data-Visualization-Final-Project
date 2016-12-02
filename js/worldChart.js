@@ -197,7 +197,8 @@ function updateMap (option) {
 
 
 
-
+    if(global_selected.length >1)
+        createComparison();
 }
 WorldChart.prototype.drawMap = function(error, world, countryCodes) {
     global_data = global_country_data;
@@ -407,7 +408,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
             div	.html("<center><h3>"+country_name.Name+"</h3></center>" +
                 "<div id='FuelTypes'></div>"+
                 "<div id='CombustionFactors'></div>")
-                .style("left",  self.svgWidth +165+ "px")
+                .style("left",  self.svgWidth +180+ "px")
                 .style("top", self.svgHeight + "px");
 
             ;
@@ -469,6 +470,8 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
         rotation_play = false;
     })
 
+
+
 };
 
 function clearIntervals(){
@@ -527,6 +530,6 @@ function remove(elem){
     if(global_selected.length >1)
         createComparison();
     else
-        $(".#c_select").selectpicker('hide')
+        $("#c_select").selectpicker('hide')
 }
 

@@ -10,28 +10,10 @@
     <meta name="author" content="Matt Howa, Brandon Tobin, Matt Willden">
     <title>Visualization - Final Project - Climate Change Players</title>
 
-    <!-- Scripts -->
-    <script type="text/javascript" src="Style/VisStyle/public/js/d3.v4.min.js"></script>
-    <script type="text/javascript" src="Style/VisStyle/public/js/queue.v1.min.js"></script>
-    <script type="text/javascript" src="Style/VisStyle/public/js/d3-geo-projection.v1.min.js"></script>
-    <script type="text/javascript" src="Style/VisStyle/public/js/jquery.min.js"></script>
-    <script type="text/javascript" src="Style/VisStyle/public/js/bootstrap-select.min.js"></script>
-    <script type="text/javascript" src="Style/VisStyle/public/js/YearBrushing.js"></script>
-    <script type="text/javascript" src="Style/VisStyle/public/js/comparison_view.js"></script>
-    <script type="text/javascript" src="Style/VisStyle/public/js/tooltip.js"></script>
-    <script type="text/javascript" src="Style/VisStyle/bower_components/d3/d3.js"></script>
-    <script type="text/javascript" src="Style/VisStyle/bower_components/d3-tip/index.js"></script>
-    <script type="text/javascript" src="Style/VisStyle/public/js/d3-legend.js"></script>
-    <script type="text/javascript" src="Style/VisStyle/public/js/topojson.min.js"></script>
-
-
-
-    <!-- End scripts -->
-
     <!-- Style -->
     <link rel="stylesheet" href="Style/css/style.css" type="text/css"/>
     <link rel="stylesheet" href="Style/css/flag-icon.min.css" type="text/css"/>
-    <link rel="stylesheet" href="Style/css/bootstrap-select.min.css"/>
+
 
     <link href="Style/VisStyle/public/css/fonts.css" rel="stylesheet" type="text/css">
     <link href="Style/VisStyle/public/css/fonts2.css" rel="stylesheet" type="text/css">
@@ -39,6 +21,7 @@
     <!-- Main Bootstrap theme -->
     <!-- Bootstrap Core CSS -->
     <link href="Style/vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="Style/css/bootstrap-select.min.css"/>
 
     <!-- Custom Fonts -->
     <link href="Style/vendor/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css">
@@ -46,6 +29,7 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
 
     <!-- Theme CSS -->
+
     <link href="Style/css/grayscale.css" rel="stylesheet">
 
     <!-- Bootstrap Core CSS -->
@@ -53,6 +37,37 @@
 
     <!-- End Style -->
 
+    <script src="Style/vendor/jquery/jquery.js"></script>
+
+    <script src="Style/VisStyle/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="Style/VisStyle/public/js/bootstrap-select.min.js"></script>
+
+    <script src="Style/VisStyle/public/js/d3.v4.min.js"></script>
+    <script src="Style/VisStyle/bower_components/d3-tip/index.js"></script>
+    <script src="Style/VisStyle/public/js/d3-geo-projection.v1.min.js"></script>
+    <script src="Style/VisStyle/public/js/d3-legend.js"></script>
+    <script src="Style/VisStyle/public/js/queue.v1.min.js"></script>
+    <script src="Style/VisStyle/public/js/topojson.min.js"></script>
+
+
+
+
+
+
+
+
+    <script src="Style/VisStyle/public/js/main.js"></script>
+    <script src="Style/VisStyle/public/js/worldChart.js"></script>
+    <script src="Style/VisStyle/public/js/wordCloud.js"></script>
+    <script src="Style/VisStyle/public/js/tooltip.js"></script>
+    <script src="Style/VisStyle/public/js/YearBrushing.js"></script>
+    <script src="Style/VisStyle/public/js/comparison_view.js"></script>
+
+    <!--Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!--Theme JavaScript -->
+    <script src="js/grayscale.js"></script>
     <script type="application/javascript">
         //TODO make the selection bar larger
         $(document).ready(function(){
@@ -156,7 +171,7 @@ width="1200" frameBorder="0" scrolling="no"></iframe>
 <div class="col-lg-8 col-lg-offset-2">
 <h2>About Climate Change Players</h2>
 
-<p>Climate Climate Change Players is a visualization which explores how the countries of the world
+<p>Climate Change Players is a visualization which explores how the countries of the world
 contribute to world emissions.
 It's purpose is to let it's users make quick correlations between countries and the respective attribute
 those countries have,
@@ -167,8 +182,8 @@ over the years you want to see for that data.
 Once you've chosen your data, you can select countries that you're interested in and compare them below.
 Again you can select the data you want to compare here.</br></br>
 
-Climate Change Players lets you draw your own conclusions and son how different countries are effecting
-the world</p>
+Climate Change Players lets you draw your own conclusions and showa how different countries are effecting
+the world's climate</p>
 
 </div>
 </div>
@@ -179,6 +194,7 @@ the world</p>
 <!--<div class="download-section">-->
         <div style="height:10px"></div>
         <div id="year-chart" class="view">
+
         </div>
 
 
@@ -371,26 +387,7 @@ class="network-name">Github</span></a>
 </footer>
 
 
-<script type="application/javascript" src="Style/VisStyle/public/js/worldChart.js"></script>
-<script type="application/javascript" src="Style/VisStyle/public/js/wordCloud.js"></script>
-<script type="application/javascript" src="Style/VisStyle/public/js/main.js"></script>
 
-<!-- Bootstrap Core JavaScript -->
-<script src="Style/VisStyle/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-
- <!--jQuery -->
-<script src="Style/vendor/jquery/jquery.js"></script>
-
- <!--Bootstrap Core JavaScript -->
-<script src="Style/vendor/bootstrap/js/bootstrap.min.js"></script>
-
- <!--Plugin JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-
-
- <!--Theme JavaScript -->
-<script src="js/grayscale.min.js"></script>
 
 
 

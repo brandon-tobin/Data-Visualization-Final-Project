@@ -465,14 +465,11 @@ WorldChart.prototype.drawMap = function (error, world, countryCodes) {
     })
 
 };
-
 function clearIntervals() {
     for (var i = 0; i < global_rotation.length; i++) {
         clearInterval(global_rotation[i]);
     }
 }
-
-
 function findData(d, countryCodes, country_data) {
     var country_name = "";
     for (var j = 0; j < countryCodes.length; j++) {
