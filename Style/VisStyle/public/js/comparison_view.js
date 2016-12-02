@@ -79,37 +79,6 @@ OptionEnumSimplified = {
 }
 
 
-//TODO
-//<select class="selectpicker" data-live-search="true" data-actions-box="true multiple>
-//<optgroup label="CO2 emissions">
-//    <option value="1">CO2 emissions (kg per PPP $ of GDP)</option>
-//    <option selected value="2">CO2 emissions (kt)</option>
-//    <option value="3">CO2 emissions (metric tons per capita)</option>
-//</optgroup>
-//
-//<optgroup label="Fuel Type">
-//    <option value="5">CO2 emissions from gaseous fuel consumption (% of total)</option>
-//<option value="6">CO2 emissions from liquid fuel consumption (% of total)</option>
-//<option value="10">CO2 emissions from solid fuel consumption (% of total)</option>
-//</optgroup>
-//<optgroup label="Combustion Factors">
-//    <option value="4">CO2 emissions from electricity and heat production, total (% of total fuel combustion)</option>
-//<option value="7">CO2 emissions from manufacturing industries and construction (% of total fuel combustion)</option>
-//<option value="8">CO2 emissions from other sectors, excluding residential buildings and commercial and public services (% of total fuel combustion)</option>
-//<option value="9">CO2 emissions from residential buildings and commercial and public services (% of total fuel combustion)</option>
-//</optgroup>
-//<optgroup label="GDP Factors">
-//    <option value="12">GDP (current US$)</option>
-//<option value="13">GDP growth (annual %)</option>
-//<option value="14">GDP per capita (current US$)</option>
-//</optgroup>
-//
-//<optgroup label="Country Factors">
-//    <option value="Population, total">Population, total</option>
-//<option value="11">Surface area (sq. km)</option>
-//</optgroup>
-//</select>
-
 $(document).ready(function () {
     $("#c_select").selectpicker('hide')
 })
