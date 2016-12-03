@@ -27,7 +27,7 @@ function createYear() {
         .style("text-anchor","end")
         .attr("dx","0em")
         .attr("dy","1.5em")
-        .attr("transform","rotate(-55)")
+        .attr("transform","rotate(0)")
         .style("font-size", "12px")
 
 
