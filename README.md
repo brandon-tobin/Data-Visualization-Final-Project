@@ -1,28 +1,3 @@
-p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 28.0px 'Helvetica Neue UltraLight'; color: #000000; -webkit-text-stroke: #000000}
-p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000}
-p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000; min-height: 12.0px}
-p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px 'Helvetica Neue Light'; color: #444444; -webkit-text-stroke: #444444; min-height: 22.0px}
-p.p5 {margin: 0.0px 0.0px 9.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000; min-height: 12.0px}
-p.p6 {margin: 0.0px 0.0px 9.0px 0.0px; font: 10.0px 'Helvetica Neue'; color: #000000; -webkit-text-stroke: #000000; min-height: 12.0px}
-p.p7 {margin: 0.0px 0.0px 10.0px 0.0px; font: 18.0px 'Helvetica Neue Light'; color: #444444; -webkit-text-stroke: #444444}
-p.p8 {margin: 0.0px 0.0px 7.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #367da2; -webkit-text-stroke: #367da2}
-p.p9 {margin: 0.0px 0.0px 10.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000}
-p.p10 {margin: 0.0px 0.0px 9.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000}
-p.p11 {margin: 0.0px 0.0px 10.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000; min-height: 12.0px}
-p.p12 {margin: 0.0px 0.0px 10.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #367da2; -webkit-text-stroke: #367da2; min-height: 15.0px}
-p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px 'Helvetica Neue Light'; color: #444444; -webkit-text-stroke: #444444}
-p.p14 {margin: 0.0px 0.0px 7.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #367da2; -webkit-text-stroke: #367da2; min-height: 15.0px}
-p.p15 {margin: 0.0px 0.0px 7.0px 0.0px; font: 10.0px 'Helvetica Neue'; color: #367da2; -webkit-text-stroke: #367da2}
-p.p16 {margin: 0.0px 0.0px 7.0px 0.0px; font: 10.0px 'Helvetica Neue'; color: #367da2; -webkit-text-stroke: #367da2; min-height: 12.0px}
-li.li9 {margin: 0.0px 0.0px 10.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000}
-li.li10 {margin: 0.0px 0.0px 9.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000}
-span.s1 {letter-spacing: 0.8px}
-span.s2 {font-kerning: none}
-span.s3 {letter-spacing: 0.3px}
-span.s4 {text-decoration: underline ; font-kerning: none}
-span.s5 {font: 6.7px 'Helvetica Neue Light'; font-kerning: none}
-span.s6 {font: 12.0px Helvetica; color: #000000}
-
 Process Book: Climate Change players
 
 Prepared for: Data Visualization
