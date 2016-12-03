@@ -407,8 +407,8 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
             div	.html("<center><h3>"+country_name.Name+"</h3></center>" +
                 "<div id='FuelTypes'></div>"+
                 "<div id='CombustionFactors'></div>")
-                .style("left",  self.svgWidth +165+ "px")
-                .style("top", self.svgHeight + "px");
+                .style("left",  self.svgWidth + 0 + "px")
+                .style("top", self.svgHeight - 0 + "px");
 
             ;
             //TODO grab correct years
