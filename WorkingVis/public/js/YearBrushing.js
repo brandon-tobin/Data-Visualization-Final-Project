@@ -27,9 +27,9 @@ function createYear() {
         .style("text-anchor","end")
         .attr("dx","0em")
         .attr("dy","1.5em")
-        .attr("transform","rotate(0)")
-        .style("font-size", "12px")
+        .attr("transform","translate(-30, 0) rotate(-45)")
 
+        .style("font-size", "12px")
 
 
     svg.append("g")
