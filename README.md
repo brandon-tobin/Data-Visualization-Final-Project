@@ -1,288 +1,135 @@
-<p align="center">
-    <strong> </strong>
-</p>
-<p align="center">
-    <strong>Project Proposal - Visualization</strong>
-</p>
-<p>
-    <strong>Basic Info.</strong>
-</p>
-<p>
-    <em>By</em>
-    <strong>:</strong>
-    <strong>Matt Howa</strong>
-    : U0805396, matt.j.howa@gmail.com
-</p>
-<p>
-    <strong>Matt Wilden</strong>
-    : U0920335, willdenms@gmail.com
-</p>
-<p>
-    <strong>Brandon Tobin</strong>
-    : U0820304, brandontobin@cox.net
-</p>
-<p>
-    <em>GitHub</em>
-    : <a href="https://github.com/willdenms/dataviscourse-pr-climate_change_players">https://github.com/willdenms/dataviscourse-pr-climate_change_players</a>
-</p>
-<p>
-    <strong>Background and Motivation.</strong>
-</p>
-<p>
-    <em>Background</em>
-    : Computer science students who want to live on the earth a few more years.
-</p>
-<p>
-    <em>Motivation</em>
-    : We were interested to see how socioeconomic properties of nations, such as population, GDP, policies, etc… correlate to climate change. Further, we
-    wanted to see if these correlations could show how different nations contribute to climate change.
-</p>
-<p>
-    <strong>Project Objectives.</strong>
-</p>
-<p>
-    1. What countries produce the most emissions?
-</p>
-<p>
-    2. How Population affects climate change?
-</p>
-<p>
-    3. How Physical attributes of a country plays a role in climate change?
-</p>
-<p>
-    4. How economic growth plays a role in climate change?
-</p>
-<p>
-    a. GDP? Infrastructure?
-</p>
-<p>
-    5. Who Cares about climate change
-</p>
-<p>
-    a. Can these people do anything about it
-</p>
-<p>
-    6. How all of these change over the years?
-</p>
-<ul type="disc">
-    <li>
-        <strong>Data</strong>
-    </li>
-</ul>
-<p>
-    o <a href="http://climate.nasa.gov/"><strong>http://climate.nasa.gov/</strong></a><strong></strong>
-</p>
-<p>
-    o
-    <a href="http://data.worldbank.org/indicator/EN.ATM.CO2E.PC?end=2013&amp;start=1960&amp;view=map">
-        <strong>http://data.worldbank.org/indicator/EN.ATM.CO2E.PC?end=2013&amp;start=1960&amp;view=map</strong>
-    </a>
-    <strong></strong>
-</p>
-<p>
-    o
-    <a href="https://en.wikipedia.org/wiki/List_of_countries_by_carbon_dioxide_emissions_per_capita#Annual_carbon_dioxide_emissions_.5Btonnes.5D_per_capita">
-        <strong>
-            https://en.wikipedia.org/wiki/List_of_countries_by_carbon_dioxide_emissions_per_capita#Annual_carbon_dioxide_emissions_.5Btonnes.5D_per_capita
-        </strong>
-    </a>
-    <strong></strong>
-</p>
-<p>
-    o
-    <a href="http://data.un.org/Data.aspx?d=WDI&amp;f=Indicator_Code%3AEN.ATM.CO2E.PC">
-        <strong>http://data.un.org/Data.aspx?d=WDI&amp;f=Indicator_Code%3AEN.ATM.CO2E.PC</strong>
-    </a>
-    <strong></strong>
-</p>
-<p>
-    o <strong>*** </strong><a href="http://data.un.org/Explorer.aspx?d=GHG"><strong>http://data.un.org/Explorer.aspx?d=GHG</strong></a><strong> ***</strong>
-</p>
-<p>
-    o <a href="http://data.un.org/Default.aspx"><strong>http://data.un.org/Default.aspx</strong></a><strong> </strong>
-</p>
-<p>
-    o <a href="http://data.okfn.org/data/core/country-list"><strong>http://data.okfn.org/data/core/country-list</strong></a><strong></strong>
-</p>
-<p>
-    o <a href="https://www.worlddata.info/downloads/"><strong>https://www.worlddata.info/downloads/</strong></a><strong> </strong>
-</p>
-<p>
-    o <a href="https://www.google.com/trends/"><strong>https://www.google.com/trends/</strong></a><strong> </strong>
-</p>
-<p>
-    o <a href="http://cait.wri.org"><strong>http://cait.wri.org</strong></a><strong></strong>
-</p>
-<p>
-    o <strong>http://data.worldbank.org</strong>
-</p>
-<p>
-    <strong>Data Processing.</strong>
-</p>
-<p>
-    <em><u>Cleanup</u></em>
-    : The data we are pulling from will be clean however we expect to do a substantial amount of data manipulation for inter connectivity between
-    visualizations.
-</p>
-<p>
-    <em><u>Quantities</u></em>
-    : Search usage, standard country data (pop., size, etc..), Emissions by country and year, economics by country and year.
-</p>
-<p>
-    <em><u>Implementation</u></em>
-    : We will implement using csv data and d3.
-</p>
-<ul type="disc">
-    <li>
-        <strong>Visualization Design</strong>
-    </li>
-</ul>
-<strong>
-    <br clear="all"/>
-</strong>
-<p>
-    <strong> </strong>
-</p>
-<p align="center">
-    <img src="file:///C:/Users/mahowa/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg" alt="../idea.jpg" width="689" align="left" hspace="12" height="368"/>
-    <img
-        src="file:///C:/Users/mahowa/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg"
-        alt="../ideas_0.JPG"
-        width="691"
-        align="left"
-        hspace="12"
-        height="337"
-    />
-    <strong><u>(Sheet 1) Brainstorm</u></strong>
-</p>
-<p>
-    · The main point of these boards, was to see what datasets would be interesting and how we could potentially visualize them.
-</p>
-<p align="center">
-    <img
-        src="file:///C:/Users/mahowa/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg"
-        alt="../design1.JPG"
-        width="759"
-        align="left"
-        hspace="12"
-        height="392"
-    />
-    <strong><u>(Sheet 2) Design 1</u></strong>
-</p>
-<p>
-    · The basic idea here is that we wanted it to be eye catching and immersive
-</p>
-<p>
-    · We did this first through a word cloud that was made up of different keywords that relate to climate change. The size of the word, would be determined by
-    how often it was searched by region (google trends)
-</p>
-<p>
-    · The second visualization is a heat map showing emissions output by geographical region. Then, brushing by years, the user would then be able to see the
-    average emissions output. Selecting a country provides a tool tip with more specific data
-</p>
-<br clear="all"/>
-<p align="center">
-    <img
-        src="file:///C:/Users/mahowa/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg"
-        alt="../idea2.JPG"
-        width="748"
-        align="left"
-        hspace="12"
-        height="362"
-    />
-    <strong><u>(Sheet 3) Design 2</u></strong>
-</p>
-<p>
-    · This designs big feature was changing the map to a cartogram. It would change the size of the geographic area to be the size of their emissions output.
-</p>
-<p>
-    · The filer was also changed to a drop down, instead of a brush type selection
-</p>
-<p>
-    · Finally we went back to an early way of displaying search trends for climate change topics.
-</p>
-<br clear="all"/>
-<p align="center">
-    <img
-        src="file:///C:/Users/mahowa/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg"
-        alt="../idea3.JPG"
-        width="741"
-        align="left"
-        hspace="12"
-        height="393"
-    />
-    <strong><u>(Sheet 4) Design 3</u></strong>
-</p>
-<p>
-    · This design focused on comparing data sets, specifically between the emissions and the the socioeconomic property that could both be filtered for more
-    detail with a drop down. Clicking on year would give a new window below the graphs which showed the selected data in more detail.
-</p>
-<p align="center">
-    <img
-        src="file:///C:/Users/mahowa/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg"
-        alt="../final.JPG"
-        width="781"
-        align="left"
-        hspace="12"
-        height="420"
-    />
-    <strong><u>(Sheet 5) Realization Design</u></strong>
-</p>
-<p>
-    · Our choice was a mix of design 1 and design 3. We really liked how the heat map could give a quick overview to the user of how emissions were being used.
-    However, design 1 lacked a way to compare datasets efficiently. We did this by letting the user select data and add it to a graph for more detail. The
-    problem with design 3 was that the user started out with too much data and it was instantly cluttered, this way the user can select the data they want and
-    it will make more sense to them.
-</p>
-<br clear="all"/>
-<ul type="disc">
-    <li>
-        <strong>Must-Have Features.</strong>
-        List the features without which you would consider your project to be a failure.
-    </li>
-</ul>
-<p>
-    1. Word Cloud
-</p>
-<p>
-    2. Graph Emissions: By Year and country
-</p>
-<p>
-    3. Graph Population: By Year and country
-</p>
-<p>
-    4. Full inter connectivity between graphics
-</p>
-<ul type="disc">
-    <li>
-        <strong>Optional Features.</strong>
-        List the features which you consider to be nice to have, but not critical.
-    </li>
-</ul>
-<p>
-    1. Animation, brushing to zoom by country
-</p>
-<ul type="disc">
-    <li>
-        <strong>Project Schedule.</strong>
-        Make sure that you plan your work so that you can avoid a big rush right before the final project deadline, and delegate different modules and
-        responsibilities among your team members. Write this in terms of weekly deadlines.
-    </li>
-    <ul type="circle">
-        <li>
-            Friday Nov 4<sup>th</sup>: Word Cloud
-        </li>
-        <li>
-            Friday Nov 11<sup>th</sup>: Heat Map – Milestone Due
-        </li>
-        <li>
-            Friday Nov 18<sup>th</sup>: Comparison Chart
-        </li>
-        <li>
-            Wednesday Nov 30<sup>th</sup>: Tooltips, brushing, animations
-        </li>
-        <li>
-            Tuesday Dec 1<sup>st</sup>: Finalize Visualization
-        </li>
-    </ul>
-</ul>
+p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 28.0px 'Helvetica Neue UltraLight'; color: #000000; -webkit-text-stroke: #000000}
+p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000}
+p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000; min-height: 12.0px}
+p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px 'Helvetica Neue Light'; color: #444444; -webkit-text-stroke: #444444; min-height: 22.0px}
+p.p5 {margin: 0.0px 0.0px 9.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000; min-height: 12.0px}
+p.p6 {margin: 0.0px 0.0px 9.0px 0.0px; font: 10.0px 'Helvetica Neue'; color: #000000; -webkit-text-stroke: #000000; min-height: 12.0px}
+p.p7 {margin: 0.0px 0.0px 10.0px 0.0px; font: 18.0px 'Helvetica Neue Light'; color: #444444; -webkit-text-stroke: #444444}
+p.p8 {margin: 0.0px 0.0px 7.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #367da2; -webkit-text-stroke: #367da2}
+p.p9 {margin: 0.0px 0.0px 10.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000}
+p.p10 {margin: 0.0px 0.0px 9.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000}
+p.p11 {margin: 0.0px 0.0px 10.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000; min-height: 12.0px}
+p.p12 {margin: 0.0px 0.0px 10.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #367da2; -webkit-text-stroke: #367da2; min-height: 15.0px}
+p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 18.0px 'Helvetica Neue Light'; color: #444444; -webkit-text-stroke: #444444}
+p.p14 {margin: 0.0px 0.0px 7.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #367da2; -webkit-text-stroke: #367da2; min-height: 15.0px}
+p.p15 {margin: 0.0px 0.0px 7.0px 0.0px; font: 10.0px 'Helvetica Neue'; color: #367da2; -webkit-text-stroke: #367da2}
+p.p16 {margin: 0.0px 0.0px 7.0px 0.0px; font: 10.0px 'Helvetica Neue'; color: #367da2; -webkit-text-stroke: #367da2; min-height: 12.0px}
+li.li9 {margin: 0.0px 0.0px 10.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000}
+li.li10 {margin: 0.0px 0.0px 9.0px 0.0px; font: 10.0px 'Helvetica Neue Light'; color: #000000; -webkit-text-stroke: #000000}
+span.s1 {letter-spacing: 0.8px}
+span.s2 {font-kerning: none}
+span.s3 {letter-spacing: 0.3px}
+span.s4 {text-decoration: underline ; font-kerning: none}
+span.s5 {font: 6.7px 'Helvetica Neue Light'; font-kerning: none}
+span.s6 {font: 12.0px Helvetica; color: #000000}
+
+Process Book: Climate Change players
+
+Prepared for: Data Visualization
+
+By: Brandon Tobin, Matt Howa, Matt Willden
+
+Website: https://willdenms.github.io/dataviscourse-pr-climate_change_players/
+
+Code: https://github.com/willdenms/dataviscourse-pr-climate_change_players
+
+December 2, 2016
+
+Overview & motivation
+
+**Overview**
+
+Climate Change Players is more than a simple visualization, it combines a massive datable of socioeconomic data for nearly every major country in the world. It allows its viewers to see correlations between these socioeconomic properties and the countries producing them. What country produces the most greenhouse gasses?, Is there a relation between land mass and emission output?, How does this data change year to year? These are only a few of endless questions which this graphic can help to answer.
+
+**Motivation / Related Work**
+
+With all the debate going on with the subject of climate change, we ended up with the question: “Even if we pass green policies in our nation (USA) will it have an effect when compared to what other countries put out?” This question motivated us to really look into what data was available, and we quickly realized that there is a massive amount of data, but we couldn’t find any visualization that let you investigate and answer questions about which countries contributed to emissions. The ones we did find, show basic stats, but didn’t really answer out question, the data was either abstracted away, or were just reusing old nasa video. We realized that with the plentiful data available we could take our visualization further; letting the user make their own decisions. Another thing that we wanted to do with the visualization is present the page in a such a way that was professional and as unbiased as possible as the same time trying to be engaging.
+
+**The Question**
+
+The aim of this project, amongst other things, is to show correlations between countries and a wide arrange of known emissions data for those countries as well as other socioeconomic data for countries, such as GDP, land size, coast size etc.. The hope of these data series, is that specific questions about climate change can be answered. The intent is not to disprove or prove climate change, but to let the user decide how to interpret the data through of who is contributing to world wide emissions. After finding large amounts of data, but not finding a visualization which gave the user a way to compare data between countries, we decided that we could take the data which is more than plentiful and answer the question ourselves.
+
+**Problems - Milestone**
+
+We were able to find data, but there was a lot of data merging that had to be done. One problem we faced right away was trying to find a base year to go with. We knew from the beginning that we wanted a time element in our  visualization, so it could show how countries emissions changed year to year. The problem was that data wasn’t available at the same time period and we wanted to present the data in most consistent way possible, finally we found a database that had data going back to 1990. We then created a few other tables to help parse this data.
+
+Another problem, though not as big as the first was with the word cloud. We wanted the word cloud data to be unique from the usual array of “array of words and their size”. We thought it would be interesting to correlate the word  frequency based how much that word had been searched. Then when a country was selected it would change the cloud to show data corresponding to how much that country had searched for words. This presented many challenges, not only in data acquisition, but also in the fact the domain of countries that were represented by google trends was incredibly small. Further, we realized that between clicks the random nature of the word cloud would make it hard to draw any actual vague conclusion from anyway, so we decided to find the total searches for a large array of words display that instead. This put the word cloud somewhat behind our schedule. 
+
+The third problem we found was with how heat map. The heat map came together nicely, however finding a mapping of colors that allow a user to quickly and more importantly accurately, see the how each country’s emission stacks up is challenging. We have tried mapping multiple colors and scales of one color and combinations of the 2, however, it still seems to come up short. We are looking into more techniques to understand how we can better solve this problem. Fortunately our tool tip for displaying detail of a country’s data is coming along nicely and will help this problem.
+
+**Problems - Final**
+
+After our milestone, we ran into more problems with word cloud, we found that generating world clouds in d3 is not a trivial task, we ended up using a layout library provided by Jason Davis (d3-cloud), however it wasn’t in version 4 of d3 which is what the rest of our project was based on. We ended up wasting a lot of time trying to port this over. Ultimately we found it to be more practical to use a iframe to house the visualization. Another task that we found to be rather difficult was how we were displaying the map, it was taking up a large amount of the screen and we wanted to find a better way to do this.
+
+Initial PROJECT Proposal 
+
+**Overview**
+
+Our initial project consisted of 3 main moving parts: a word cloud formed from the search trends for countries. A heat map which displayed an overview of all countries specific emission output. Finally the last major part was a tool-tip which interacted with the heat map to provide detail of that country’s emissions. 
+
+Of course there are many more little parts that will be incorporated as well, these include a looping animation button that will let the heat map cycle through the years so that the user can see how it changes over the 26 year data period. Brushing so that a user can see more fine grain details of a country’s specific output by county/region. Finally making sure all of the graphs were interconnected so that a change in one would update everywhere else.
+
+Project Revisal, Milestone 
+
+**Data**
+
+The data for the heat map contains every major country, and for most countries, it also contains their underlying region as well. For each country entry there is a breakdown of several type of different emissions as well as socioeconomic data such as land size, GDP, population etc… For this project thus far, we have not been able to determine if brushing into the country regions is a viable option, simply because not every country has these data points. Moreover, we do not have the geographic data plots to actually paint these. This could prove an insurmountable task.
+
+**Tasks**
+
+The main tasks were:
+
+- Finding the Actual Data: this was a large task and took some time, though as previously mentioned, a database which allows for excellent data gathering was found, and with a little fiddling it is possible to generate dataset very quickly. Though it was not necessarily trivial to write the data model. It required planning for the future in how to incorporate all of the moving parts, with not knowing the exact implementation. Ultimately this meant writing helper code to help with accessing the data.
+- Creating a Heat Map: Once the data and data model was establish the heat map did come together. We wrote it in such a way to help incorporate the tooltip later. When a country is clicked it prints that country’s info to the console. We hope this will make integration of the tool tip easier. The Heat Map did take several iterations to figure out a color scheme, something we are still working on:
+
+As can be seen, we tried several different color schemes, we found the last one to be the best, but still would like to investigate what color options could help represent the data better, and more accurately.
+
+ 
+
+- Word Cloud: This also proved to be more of a challenge than expected, the main problem was trying to figure out how to actually map the data to the word cloud. More specific, we realized that our interconnectivity of clicking on a country and having that country’s search trends for climate change topics was limited to only a few countries. This took time out of the development schedule, but we were able to still create what we think is a good visualization.
+
+- Finally there are 3 tasks that remain: implementation of a comparison chart, tooltips, brushing, and animations.  Our schedule is ahead on tooltips and comparison charts. The main idea here is upon clicking on a country the user will have the ability to interact further with the data. The illustration below would be an example of clicking on a country where a tool tip /  comparison chart would be populated. Here we see that the 2 graphs show types of emissions compared against 3 socioeconomic properties.
+
+**Users**
+
+In our vision, the target audience would be something of a New York Times / online newspaper reader. One where the author would want to show as little bias as possible to tell his narrative. The user would then be able to form their own opinions. It isn’t meant to be a stance piece for or against, simple an informative visualization which can help a person who has an average understanding of climate change problems and general economic theories, answer their own questions.
+
+Final Project
+
+  
+
+**  **
+
+**Data**
+
+From this point, the data was pretty much in place. We did find more data for CO2 emissions which allowed our visualization to have an even greater amount of data to choose from. Another change was how we were gathering data for the word cloud. We also changed the data for the word cloud. The original was to have the data come from google trends, then for each country what was selected on the map, the cloud would change to reflect the search preferences for that country. There were 2 problems with this, first, there aren’t enough data set to match the map, so it was hard to populate the data consistently. Secondly, we found that it wasn’t really contributing to the visualization, so instead of populating data sets for each country, we summed up the data and that is what we finally used
+
+**Exploratory Data Analysis**
+
+From our previous version the biggest change was how finally incorporating the tool-tip and the comparison chart with the main visualization. The biggest change was to how our comparison chart worked, we realized that a bar chart might not be the most effective way to show the data. We swapped it for a parallel coordinates chart, which quickly showed how multiple countries compare in each category. The big reason for this change was that we realized that what we really wanted to show was to show how to data categories related to each other. Switch the map for a globe view accompanied with a tool-tip that gave a quick break down of the basic stats for the current country made it much easier to access and evaluate country data before adding it to the comparison chart.
+
+Finally what we really thought brings everything together was that we used the same color cue to help the user quickly understand what was a lot and what was not a lot. This was important as the data categories change. Ultimately this coloring which we used for the choropeth globe, was used for the tool tips, and the word cloud to give the presentation of data a seamless feel.
+
+**Design Evolution / Final Implementation**
+
+From the last point to this, there were many changes, followed obviously by the actual integration of all the visualization together, in a concise format. There were 4 main changes which occurred, the afore mentioned change in the word cloud presentation, the choropeth map to a choropeth globe view, the bar charts for comparison charts to a parallel coordinates chart, and finally the inclusion of a year brusher to select multiple years for the data.  These changes are shown below:
+
+**Word Cloud Evolution**
+
+We  originally had a black white word cloud, we changed the color scheme to match the choropeth globe like the rest of the data. We changed the way that the cloud overlapped with itself along with fonts, we had always thought of the word cloud to be the attention getter, for the splash screen. After all that’s what word clouds are for, they aren’t very good at showing actual data, so we added a picture to finalize the splash screen. Then finally we added animatio      
+
+**Map to Globe**
+
+As can be easily seen from the revisions, this was something that we reworked a lot, in the final image, you can see the integration of the tool tip, year brush and legend and gridlines, what you cannot see is that we incorporated a zoom feature:      
+
+**Parallel Coordinates**
+
+For showing how to compare different countries on the fly and through a more refined comparison chart, we evolved from using a bar chart exclusively to a parallel coordinate system for comparing fine details for multiple countries at once, while maintaining a bar chart system for quickly displaying map data. Once we settled on the parallel coordinate chart, the biggest part was controlling how we selected data and styling As can be seen in the last image, there is a interactive select box, as well as a pane showing what countries are in the comparison chart.     
+
+**Year Selection**
+
+This was a smaller change, but it helped a lot to pull the graph together, another incorporation that helped was the input of a play / pause button, this allows the globe to spin. The first image shows the original way we selected years, the final shows the brushing chart, as well as the play /  pause buttons  
+
+Conclusion
+
+In the end our visualization was able to answer the question which spawned our motivation, does restricting the emissions in the USA really effect the world: IT DOES!!  When compared to other countries, the USA puts out a very large amount of emissions, especially CO2 emissions. We learned that there exists many correlations between emissions and the GDP and land mass of a population, but not in every situation. For example, in nations that have many green policies in place, like Scandinavia, they have a large GDP per capita, yet their total emission remains low. To take this visualization further, we’d like to further break down the data and perhaps add a few more interactive graphs, we learned a lot about how to implement different types of data visualization systems, but in the end it was hard to have time to implement them all. We think that this visualization can help answer a lot of questions, but what is perhaps more encouraging is that it help us ask more questions that we couldn’t have known to ask before.
