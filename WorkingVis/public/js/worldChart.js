@@ -20,12 +20,12 @@ function WorldChart(){
     var self = this;
     global_world_map_self = this;
     self.init();
-};
+}
 
 
 
 /**
- * Initializes the svg elements required to lay the tiles
+ * Initializes the svg elements required to lay the globe
  * and to populate the legend.
  */
 WorldChart.prototype.init = function(){
@@ -38,7 +38,7 @@ WorldChart.prototype.init = function(){
 
     self.svgWidth = 500;
     self.svgHeight = 500;
-    // var legendHeight = 150;
+
     var legendHeight = self.svgHeight;
 
     //creates svg elements within the div
@@ -57,10 +57,9 @@ WorldChart.prototype.init = function(){
 };
 
 /**
- * Creates tiles and tool tip for each state, legend for encoding the color scale information.
+ * Reads in the required data to draw the globe and then calls the function to draw it.
  *
- * @param electionResult election data for the year selected
- * @param colorScale global quantile scale based on the winning margin between republicans and democrats
+ * @param country_data country data for pollution
  */
 WorldChart.prototype.update = function(country_data){
     var self = this;
@@ -73,6 +72,10 @@ WorldChart.prototype.update = function(country_data){
         .defer(d3.tsv, "data/newWorldCountryNames.tsv")
         .await(self.drawMap);
 };
+
+/**
+ * Creates the year array
+ */
 function YearArray(Years,start_year,end_year){
     var yearArr = [];
 
@@ -92,6 +95,10 @@ function YearArray(Years,start_year,end_year){
 
     return yearArr;
 }
+
+/**
+ * Figures out the max option available
+ */
 function OptionMax(option){
     option = YearArray(option, selectedyear1, selectedyear2);
     var max = d3.max(option,function(d) {
@@ -99,6 +106,10 @@ function OptionMax(option){
     });
     return max;
 }
+
+/**
+ * Figures out the min option available
+ */
 function OptionMin(option){
     option = YearArray(option, selectedyear1, selectedyear2);
     var min = d3.min(option,function(d) {
@@ -106,6 +117,10 @@ function OptionMin(option){
     });
     return min;
 }
+
+/**
+ * Creates the ability to filter the options
+ */
 function filterOptions(_option,_options){
     _options = YearArray(_options,selectedyear1,selectedyear2);
     return _options.filter(function(d){
@@ -113,6 +128,10 @@ function filterOptions(_option,_options){
         return r;
     })
 }
+
+/**
+ * Updates map visualization when a user interacts with it
+ */
 function updateMap (option) {
 
     var self = global_world_map_self;
@@ -127,7 +146,7 @@ function updateMap (option) {
     country_data.forEach(function(d){
         var _option = d.Options.filter(function(dd){
             return dd.Name == option;
-        })
+        });
 
         var minTemp = OptionMin(_option[0].Years);
         var maxTemp = OptionMax(_option[0].Years);
@@ -153,7 +172,7 @@ function updateMap (option) {
         if(selectedyear1 == selectedyear2)
             return selectedyear1;
         return selectedyear1 + " - " + selectedyear2;
-    })
+    });
 
     var legendLinear = d3.legendColor()
         .shapeWidth(20)
@@ -164,8 +183,6 @@ function updateMap (option) {
 
     self.legendSvg.select(".legendLinear")
         .call(legendLinear);
-
-
 
     self.svg.selectAll("path")
         .data(topojson.feature(world, world.objects.countries).features)
@@ -194,16 +211,15 @@ function updateMap (option) {
                 }
             }
         });
-
-
-
-
 }
+
+/**
+ * Draws the map visualization for the first time on page load
+ */
 WorldChart.prototype.drawMap = function(error, world, countryCodes) {
     global_data = global_country_data;
     global_country_codes = countryCodes;
     global_world = world;
-    var mapYear = "";
     var self = global_world_map_self;
 
     self.svg.append("text")
@@ -218,7 +234,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
         .attr("id","title")
         .style("font-size","14px")
         .style("font-weight","600")
-        .attr("z-index", 1000)
+        .attr("z-index", 1000);
 
 
     var countries = topojson.feature(world, world.objects.countries).features;
@@ -230,7 +246,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
     country_data.forEach(function(d){
         var _option = d.Options.filter(function(dd){
             return dd.Name == option;
-        })
+        });
 
         var minTemp = OptionMin(_option[0].Years);
         var maxTemp = OptionMax(_option[0].Years);
@@ -272,22 +288,12 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
         .cells(9)
         .labelFormat(d3.format(".0s"))
         .orient('vertical')
-        .scale(colorScale)
-
-
-    // var legendLinear = d3.legendColor()
-    //     .shapeWidth(self.svgWidth/9 - 2)
-    //     .cells(9)
-    //     .orient('horizontal')
-    //     .scale(colorScale);
+        .scale(colorScale);
 
     self.legendSvg.select(".legendLinear")
         .call(legendLinear);
 
-
-
     var graticule = d3.geoGraticule();
-
 
     var drag = d3.drag()
         .subject(function() { var r = projection.rotate(); return {x: r[0] / .25, y: -r[1] / .25}; })
@@ -306,14 +312,14 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
                 return;
             time = Date.now();
             rotate = projection.rotate();
-            clearIntervals()
+            clearIntervals();
             global_rotation.push(setInterval(function(){
                 var dt = Date.now() - time;
                 projection.rotate([rotate[0] + velocity[0] * dt, rotate[1] + velocity[1] * dt]);
                 svg.selectAll(".graticule").attr("d", path);
                 svg.selectAll(".country").attr("d", path);
             }, 10));
-        })
+        });
 
 
     //Tooltip Div
@@ -322,7 +328,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
         .style("opacity", 0)
         .style("border-style","solid")
         .style("border-width",".01em")
-        .style("padding","5px")
+        .style("padding","5px");
 
     var svg = self.svg;
 
@@ -361,9 +367,8 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
                 }
             }
         })
-        .on("click", function (d, i) {
+        .on("click", function (d) {
             var country_name = findData(d, countryCodes, global_data);
-            //console.log(country_name);
 
             var Exists = false;
             global_selected.forEach(function(d){
@@ -380,9 +385,9 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
 
             var html = "<li class='list-group-item'>" +country_name.Name;
             html +="<div class='flag-icon flag-icon-"+ cc +" flag-icon-squared' style='margin-left: 10px'></div>";
-            html +="<span class='label label-danger pull-right' style='cursor: pointer' onclick='remove(this)'>x</span></li>"
+            html +="<span class='label label-danger pull-right' style='cursor: pointer' onclick='remove(this)'>x</span></li>";
 
-            $('#selected_countries').append(html)
+            $('#selected_countries').append(html);
 
             var CountryPack = {};
             CountryPack.Name = country_name.Name;
@@ -396,7 +401,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
 
         })
         .on("mouseover", function(d) {
-            var country_name = findData(d, countryCodes, global_data)
+            var country_name = findData(d, countryCodes, global_data);
 
             if(country_name == undefined)
                 return;
@@ -410,19 +415,15 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
                 .style("left",  self.svgWidth + 150 + "px")
                 .style("top", self.svgHeight - 300 + "px");
 
-            ;
-            //TODO grab correct years
             map_tooltip(country_name.Code, selectedyear1, selectedyear2)
         })
-        .on("mouseout", function(d) {
-            //TODO only do this when changing years scrubbed
-            //setGlobal();
+        .on("mouseout", function() {
             div.transition()
                 .duration(500)
                 .style("opacity", 0);
             div.html("");
         })
-        .attr("style","cursor: pointer")
+        .attr("style","cursor: pointer");
 
     svg.insert("path", "path.countries")
         .datum(graticule)
@@ -436,8 +437,8 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
         .scaleExtent([1, 10])
         .on("zoom", function(){
             clearIntervals();
-            svg.selectAll(".graticule").attr("transform", d3.event.transform)
-            svg.selectAll(".country").attr("transform", d3.event.transform)
+            svg.selectAll(".graticule").attr("transform", d3.event.transform);
+            svg.selectAll(".country").attr("transform", d3.event.transform);
 
             if(!rotation_play)
                 return;
@@ -449,7 +450,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
             }, 10));
         });
 
-    svg.call(zoom)
+    svg.call(zoom);
 
     $("#play").on("click",function(d){
         time = Date.now();
@@ -463,7 +464,7 @@ WorldChart.prototype.drawMap = function(error, world, countryCodes) {
         }, 10));
 
         rotation_play = true;
-    })
+    });
     $("#pause").on("click",function(d){
         clearIntervals();
         rotation_play = false;
@@ -477,7 +478,9 @@ function clearIntervals(){
     }
 }
 
-
+/**
+ * Helper method for pairing country json id's to country names
+ */
 function findData (d, countryCodes, country_data) {
     var country_name = "";
     for (var j = 0; j < countryCodes.length; j++)
@@ -497,12 +500,16 @@ function findData (d, countryCodes, country_data) {
         }
     }
 }
+
+/**
+ * Calls the updateMap function based on the user selections
+ */
 function chooseData() {
 
     //Changed the selected data when a user selects a different
     // menu item from the drop down.
 
-    var data = $("#controls > div > button > span.filter-option.pull-left").text()
+    var data = $("#controls > div > button > span.filter-option.pull-left").text();
     updateMap(data);
 }
 function refreshData(){
@@ -520,13 +527,13 @@ function remove(elem){
 
     global_selected = global_selected.filter(function(d){
         return d.Name !== Country;
-    })
+    });
 
 
     $("#comparison").html("");
     if(global_selected.length >1)
         createComparison();
     else
-        $(".#c_select").selectpicker('hide')
+        $(".#c_select").selectpicker('hide');
 }
 

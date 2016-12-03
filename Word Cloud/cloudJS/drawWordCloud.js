@@ -75,13 +75,17 @@ function wordCloud(selector) {
     }
 
 }
-
+/**
+ * Initializes the wordcloud...
+ *
+ * @param myWords - List of tuples (word, size) where the word is what is drawn, and the size is the
+ * factor by which it is drawn.
+ */
 function init(myWords) {
-//Some sample data - http://en.wikiquote.org/wiki/Opening_lines
+
     var _words = myWords;
 
-//Prepare one of the sample sentences by removing punctuation,
-// creating an array of words and computing a random size attribute.
+
     function getWords(i) {
         return _words.map(function (d) {
             //console.log(d.size);
@@ -98,9 +102,12 @@ function init(myWords) {
         })
     }
 
-//This method tells the word cloud to redraw with a new set of words.
-//In reality the new words would probably come from a server request,
-// user input or some other source.
+    /**
+     * Controls how often the cloud is updated with new words as
+     * well as the frequency of the updates.
+     * @param vis
+     * @param i
+     */
     function showNewWords(vis, i) {
         i = i || 0;
 
@@ -110,9 +117,9 @@ function init(myWords) {
         }, 10000)
     }
 
-//Create a new instance of the word cloud visualisation.
+
     var myWordCloud = wordCloud('body');
 
-//Start cycling through the demo data
+
     showNewWords(myWordCloud);
 }
