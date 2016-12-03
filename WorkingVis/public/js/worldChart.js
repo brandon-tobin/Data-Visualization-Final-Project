@@ -72,6 +72,10 @@ WorldChart.prototype.update = function(country_data){
         .defer(d3.tsv, "data/newWorldCountryNames.tsv")
         .await(self.drawMap);
 };
+
+/**
+ * Creates the year array
+ */
 function YearArray(Years,start_year,end_year){
     var yearArr = [];
 
@@ -91,6 +95,10 @@ function YearArray(Years,start_year,end_year){
 
     return yearArr;
 }
+
+/**
+ * Figures out the max option available
+ */
 function OptionMax(option){
     option = YearArray(option, selectedyear1, selectedyear2);
     var max = d3.max(option,function(d) {
@@ -98,6 +106,10 @@ function OptionMax(option){
     });
     return max;
 }
+
+/**
+ * Figures out the min option available
+ */
 function OptionMin(option){
     option = YearArray(option, selectedyear1, selectedyear2);
     var min = d3.min(option,function(d) {
@@ -105,6 +117,10 @@ function OptionMin(option){
     });
     return min;
 }
+
+/**
+ * Creates the ability to filter the options
+ */
 function filterOptions(_option,_options){
     _options = YearArray(_options,selectedyear1,selectedyear2);
     return _options.filter(function(d){
@@ -112,6 +128,10 @@ function filterOptions(_option,_options){
         return r;
     })
 }
+
+/**
+ * Updates map visualization when a user interacts with it
+ */
 function updateMap (option) {
 
     var self = global_world_map_self;
@@ -192,6 +212,10 @@ function updateMap (option) {
             }
         });
 }
+
+/**
+ * Draws the map visualization for the first time on page load
+ */
 WorldChart.prototype.drawMap = function(error, world, countryCodes) {
     global_data = global_country_data;
     global_country_codes = countryCodes;
@@ -454,7 +478,9 @@ function clearIntervals(){
     }
 }
 
-
+/**
+ * Helper method for pairing country json id's to country names
+ */
 function findData (d, countryCodes, country_data) {
     var country_name = "";
     for (var j = 0; j < countryCodes.length; j++)
@@ -474,6 +500,10 @@ function findData (d, countryCodes, country_data) {
         }
     }
 }
+
+/**
+ * Calls the updateMap function based on the user selections
+ */
 function chooseData() {
 
     //Changed the selected data when a user selects a different
